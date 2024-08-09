@@ -10,7 +10,7 @@ import Link from "next/link";
 export function NavbarDemo() {
     return (
         <div className="relative w-full flex items-center justify-around">
-            <Navbar className="top-2 px-10" />
+            <Navbar className="top-2 px-2" />
         </div>
     );
 }
@@ -23,11 +23,11 @@ function Navbar({ className }: { className?: string }) {
         >
             <Menu setActive={setActive}>
                 <Link href={"/"} className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white">
-                    <Image className="w-8 h-8 mr-2" src={logo} alt="logo" />
-                    SurfSense
+                    <Image className="hidden sm:block w-8 h-8 mr-2" src={logo} alt="logo" />
+                    <span className="hidden md:block">SurfSense</span>
                 </Link>
 
-                <div className="flex gap-4">
+                <div className="flex gap-2">
                     <Link href={"/login"}>
                         <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
                             Log In
@@ -40,7 +40,7 @@ function Navbar({ className }: { className?: string }) {
                         </button>
                     </Link>
 
-                    <Link href={"/chat"}>
+                    <Link href={"/chat"} className="grow">
                         <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
                             🧠
                         </button>

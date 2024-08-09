@@ -26,7 +26,7 @@ export function AuroraBackgroundDemo() {
                 <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
                     SurfSense 
                 </div>
-                <div className="text-lg font-semibold">Beta v0.0.1</div>
+                <div className="text-lg font-semibold dark:text-neutral-200">Beta v0.0.1</div>
                 <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
                     A Knowledge Base 🧠 for World Wide Web Surfers.
                 </div>
