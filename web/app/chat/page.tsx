@@ -47,6 +47,7 @@ type NormalResponse = {
 
 type ChatMessage = {
   type: string;
+  userquery: string;
   message: NormalResponse | string;
 };
 
@@ -113,6 +114,7 @@ function ProtectedPage() {
       let cur = currentChat;
       cur.push({
         type: "normal",
+        userquery: query,
         message: data,
       });
   
@@ -145,6 +147,7 @@ function ProtectedPage() {
     let cur = currentChat;
     cur.push({
       type: "description",
+      doctitle: document.VisitedWebPageTitle,
       message: res.response,
     });
 
@@ -176,6 +179,9 @@ function ProtectedPage() {
                         className="bg-background flex flex-col gap-2 rounded-lg border p-8"
                         key={index}
                       >
+                        <p className="text-3xl font-semibold">
+                          {chat.userquery}
+                        </p>
                         <p className="font-sm font-semibold">
                           SurfSense Response:
                         </p>
@@ -266,8 +272,8 @@ function ProtectedPage() {
                         className="bg-background flex flex-col gap-2 rounded-lg border p-8"
                         key={index}
                       >
-                        <p className="font-sm font-semibold">
-                          Detailed Description of Browsing Session: 
+                        <p className="text-3xl font-semibold">
+                          {chat.doctitle}
                         </p>
                         <MarkDownTest source={chat.message} />
                       </div>
