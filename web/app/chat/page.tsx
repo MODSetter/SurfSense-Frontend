@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "@/public/SurfSense.png";
 import MarkdownPreview from "@uiw/react-markdown-preview";
@@ -25,6 +24,7 @@ import {
 
 import Markdown from "react-markdown";
 import MarkDownTest from "./markdown";
+import { useRouter } from "next/navigation";
 
 type Document = {
   BrowsingSessionId: string;
@@ -52,29 +52,39 @@ type ChatMessage = {
 
 function ProtectedPage() {
   //   const navigate = useNavigate();
-  // const router = useRouter();
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
 
   const [currentChat, setCurrentChat] = useState<any[]>([]);
 
-  // useEffect(() => {
-  //   const verifyToken = async () => {
-  //     const token = window.localStorage.getItem('token');
-  //       console.log(token)
-  //     try {
-  //       const response = await fetch(`http://localhost:8000/verify-token/${token}`);
+  useEffect(() => {
+    const verifyToken = async () => {
+      const token = window.localStorage.getItem('token');
+        console.log(token)
+      try {
+        const response = await fetch(`http://localhost:8000/verify-token/${token}`);
 
-  //       if (!response.ok) {
-  //         throw new Error('Token verification failed');
-  //       }
-  //     } catch (error) {
-  //       window.localStorage.removeItem('token');
-  //       router.push('/');
-  //     }
-  //   };
+        if (!response.ok) {
+          throw new Error('Token verification failed');
+        }else{
+          const NEO4JURL = localStorage.getItem('neourl');
+          const NEO4JUSERNAME = localStorage.getItem('neouser');
+          const NEO4JPASSWORD = localStorage.getItem('neopass');
+          const OPENAIKEY = localStorage.getItem('openaikey');
+    
+          const check = (NEO4JURL && NEO4JUSERNAME && NEO4JPASSWORD && OPENAIKEY)
+          if(!check){
+            router.push('/settings');
+          }
+        }
+      } catch (error) {
+        window.localStorage.removeItem('token');
+        router.push('/login');
+      }
+    };
 
-  //   verifyToken();
-  // }, [router]);
+    verifyToken();
+  }, [router]);
 
   const handleSubmit = async (formData: any) => {
     setLoading(true);
@@ -90,6 +100,10 @@ function ProtectedPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         query: query,
+        neourl: localStorage.getItem('neourl'),
+        neouser: localStorage.getItem('neouser'),
+        neopass: localStorage.getItem('neopass'),
+        openaikey: localStorage.getItem('openaikey'),
       }),
     };
 
@@ -105,23 +119,7 @@ function ProtectedPage() {
       
       setCurrentChat([...cur]);
       setLoading(false);
-    });
-
-    // const response = await fetch(`http://127.0.0.1:8000/`, requestOptions);
-    // const res = await response.json();
-
-    // console.log("reschat", res);
-    // setLoading(false);
-    
-    // let cur = currentChat;
-    // cur.push({
-    //   type: "normal",
-    //   message: res,
-    // });
-
-    
-    // setCurrentChat([...cur]);
-    
+    });    
   };
 
   const getDocDescription = async (document: Document) => {
@@ -131,6 +129,10 @@ function ProtectedPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         query: JSON.stringify(document),
+        neourl: localStorage.getItem('neourl'),
+        neouser: localStorage.getItem('neouser'),
+        neopass: localStorage.getItem('neopass'),
+        openaikey: localStorage.getItem('openaikey'),
       }),
     };
 
@@ -187,11 +189,11 @@ function ProtectedPage() {
                           chat.message.relateddocs.map((doc) => {
                             return (
                               <Collapsible className="border rounded-lg p-3">
-                                <CollapsibleTrigger className="flex justify-between gap-2">
+                                <CollapsibleTrigger className="flex justify-between gap-2 mb-2">
                                   <FileCheck />
                                   {doc.VisitedWebPageTitle}
                                 </CollapsibleTrigger>
-                                <CollapsibleContent>
+                                <CollapsibleContent className="flex flex-col gap-4">
                                   <Table>
                                     <TableBody>
                                       <TableRow>
@@ -204,7 +206,7 @@ function ProtectedPage() {
                                       </TableRow>
                                       <TableRow>
                                         <TableCell className="font-medium">
-                                          Visted Url
+                                          URL
                                         </TableCell>
                                         <TableCell>
                                           {doc.VisitedWebPageURL}
@@ -212,7 +214,7 @@ function ProtectedPage() {
                                       </TableRow>
                                       <TableRow>
                                         <TableCell className="font-medium">
-                                          Reffering Url
+                                          Reffering URL
                                         </TableCell>
                                         <TableCell>
                                           {doc.VisitedWebPageReffererURL}
@@ -232,7 +234,7 @@ function ProtectedPage() {
 
                                       <TableRow>
                                         <TableCell className="font-medium">
-                                          Visit Duration(In Millisenconds)
+                                          Visit Duration (In Milliseconds)
                                         </TableCell>
                                         <TableCell>
                                           {
@@ -278,7 +280,7 @@ function ProtectedPage() {
             <div className="from-muted/30 to-muted/30 animate-in dark:from-background/10 dark:to-background/80 inset-x-0 bottom-0 w-full duration-300 ease-in-out peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] dark:from-10%">
               <div className="mx-auto sm:max-w-4xl sm:px-4">
 
-                <div className={loading ? "border border-blue-300 shadow rounded-md p-4 w-full my-4" : "hidden"}>
+                <div className={loading ? "rounded-md p-4 w-full my-4" : "hidden"}>
                   <div className="animate-pulse flex space-x-4">
                     <div className="rounded-full bg-slate-700 h-10 w-10">
                     </div>

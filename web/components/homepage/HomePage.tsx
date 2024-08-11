@@ -21,7 +21,7 @@ export function AuroraBackgroundDemo() {
                 className="relative flex flex-col gap-4 items-center justify-center px-4"
             >
                 <div className="flex items-center mb-4 text-5xl font-semibold text-gray-900 dark:text-white">
-                    <Image className="w-64 h-64 mr-2" src={icon} alt="logo" />
+                    <Image className="w-64 h-64 rounded-full" src={icon} alt="logo" />
                 </div>
                 <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
                     SurfSense 
