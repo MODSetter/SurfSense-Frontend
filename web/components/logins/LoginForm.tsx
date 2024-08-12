@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 
@@ -30,7 +31,7 @@ export const LoginForm = () => {
     formDetails.append('password', password);
 
     try {
-      const response = await fetch('http://localhost:8000/token', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -91,7 +92,7 @@ export const LoginForm = () => {
                   {loading ? 'Logging in...' : 'Login'}
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Don’t have an account yet? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
+                  Don’t have an account yet? <Link href={"/signup"} className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
                 </p>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
               </form>

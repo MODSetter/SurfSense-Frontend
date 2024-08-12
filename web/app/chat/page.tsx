@@ -2,10 +2,8 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import logo from "@/public/SurfSense.png";
-import MarkdownPreview from "@uiw/react-markdown-preview";
-import { ChevronsUpDown, FileCheck, Plus, X } from "lucide-react";
+import { FileCheck } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
@@ -15,14 +13,9 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-import Markdown from "react-markdown";
 import MarkDownTest from "./markdown";
 import { useRouter } from "next/navigation";
 
@@ -61,9 +54,9 @@ function ProtectedPage() {
   useEffect(() => {
     const verifyToken = async () => {
       const token = window.localStorage.getItem('token');
-        console.log(token)
+        // console.log(token)
       try {
-        const response = await fetch(`http://localhost:8000/verify-token/${token}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/verify-token/${token}`);
 
         if (!response.ok) {
           throw new Error('Token verification failed');
@@ -105,10 +98,11 @@ function ProtectedPage() {
         neouser: localStorage.getItem('neouser'),
         neopass: localStorage.getItem('neopass'),
         openaikey: localStorage.getItem('openaikey'),
+        apisecretkey: process.env.NEXT_PUBLIC_API_SECRET_KEY
       }),
     };
 
-    fetch(`http://127.0.0.1:8000/`, requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}`, requestOptions)
     .then(res=>res.json())
     .then(data=> {
       let cur = currentChat;
@@ -135,11 +129,12 @@ function ProtectedPage() {
         neouser: localStorage.getItem('neouser'),
         neopass: localStorage.getItem('neopass'),
         openaikey: localStorage.getItem('openaikey'),
+        apisecretkey: process.env.NEXT_PUBLIC_API_SECRET_KEY
       }),
     };
 
     const response = await fetch(
-      `http://127.0.0.1:8000/kb/doc`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL!}/kb/doc`,
       requestOptions
     );
     const res = await response.json();
@@ -153,7 +148,7 @@ function ProtectedPage() {
 
     setLoading(false);
     setCurrentChat([...cur]);
-    console.log(document);
+    // console.log(document);
   };
 
   if (currentChat) {
