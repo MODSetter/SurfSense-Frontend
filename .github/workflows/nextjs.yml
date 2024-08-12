@@ -24,6 +24,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+package:
+  version: "9.0"
+
 jobs:
   # Build job
   build:
