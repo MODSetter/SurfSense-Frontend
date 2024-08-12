@@ -79,6 +79,11 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
         run: pnpm next build
+        env:
+          NEXT_PUBLIC_API_SECRET_KEY: ${{ secrets.NEXT_PUBLIC_API_SECRET_KEY }}
+          NEXT_PUBLIC_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
+          NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
+          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
