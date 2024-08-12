@@ -8,7 +8,7 @@ import icon from "../../public/SurfSense.png"
 import Image from "next/image";
 import Link from "next/link";
 
-export function AuroraBackgroundDemo() {
+export function HomePage() {
     return (
         <AuroraBackground>
             <motion.div
@@ -27,9 +27,9 @@ export function AuroraBackgroundDemo() {
                 <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
                     SurfSense 
                 </div>
-                <div className="text-lg font-semibold dark:text-neutral-200">Beta v0.0.1</div>
+                {/* <div className="text-lg font-semibold dark:text-neutral-200">Beta v0.0.1</div> */}
                 <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
-                    A Knowledge Graph 🧠 for World Wide Web Surfers.
+                    A Knowledge Graph 🧠 Brain 🧠 for World Wide Web Surfers.
                 </div>
                 <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
                     <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />

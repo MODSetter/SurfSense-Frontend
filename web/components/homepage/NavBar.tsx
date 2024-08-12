@@ -7,7 +7,7 @@ import Image from "next/image";
 import logo from "../../public/SurfSense.png"
 import Link from "next/link";
 
-export function NavbarDemo() {
+export function MainNavbar() {
     return (
         <div className="relative w-full flex items-center justify-around">
             <Navbar className="top-2 px-2" />

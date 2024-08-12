@@ -29,20 +29,20 @@ type Document = {
   VisitedWebPageContent: string;
 };
 
-type Description = {
-  response: string;
-};
+// type Description = {
+//   response: string;
+// };
 
-type NormalResponse = {
-  response: string;
-  relateddocs: Document[];
-};
+// type NormalResponse = {
+//   response: string;
+//   relateddocs: Document[];
+// };
 
-type ChatMessage = {
-  type: string;
-  userquery: string;
-  message: NormalResponse | string;
-};
+// type ChatMessage = {
+//   type: string;
+//   userquery: string;
+//   message: NormalResponse | string;
+// };
 
 function ProtectedPage() {
   //   const navigate = useNavigate();
