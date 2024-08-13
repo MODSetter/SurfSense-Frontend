@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 			{
 				url: "https://surfsense.net/og-image.png",
 				width: 1200,
-				height: 627,
+				height: 630,
 				alt: "SurfSense - A Knowledge Graph Brain for World Wide Web Surfers.",
 			},
 		],
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 			{
 				url: "https://surfsense.net/og-image.png",
 				width: 1200,
-				height: 627,
+				height: 630,
 				alt: "SurfSense - A Knowledge Graph Brain for World Wide Web Surfers.",
 			},
 		],
