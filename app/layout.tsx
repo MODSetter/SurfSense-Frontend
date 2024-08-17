@@ -55,7 +55,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
 
-          <div className="flex flex-col">
+          <div className="flex flex-col justify-between h-screen">
             <MainNavbar />
             <div className="grow">
               {children}
