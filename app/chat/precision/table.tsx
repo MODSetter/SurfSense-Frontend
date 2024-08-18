@@ -13,7 +13,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, Brain, ChevronDown, User } from "lucide-react"
+
+import { motion } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -116,7 +118,7 @@ export const columns: ColumnDef<Docs>[] = [
     header: () => <div className="text-right">Visit Duration (seconds)</div>,
     cell: ({ row }) => {
       //   const amount = parseFloat(row.getValue("amount"))
-      return <div className="text-right font-medium">{parseInt(row.getValue("VisitedWebPageVisitDurationInMilliseconds"))/1000}</div>
+      return <div className="text-right font-medium">{parseInt(row.getValue("VisitedWebPageVisitDurationInMilliseconds")) / 1000}</div>
     },
   },
 ]
@@ -389,28 +391,51 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
                   // console.log("chat", chat);
                   if (chat.type === "ai") {
                     return (
-                      <div
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{
+                          duration: 0.3,
+                          ease: [0, 0.71, 0.2, 1.01],
+                          scale: {
+                            type: "spring",
+                            damping: 5,
+                            stiffness: 100,
+                            restDelta: 0.001
+                          }
+                        }}
                         className="bg-background flex flex-col gap-2 rounded-lg border p-8"
                         key={index}
                       >
-                        <p className="font-sm font-semibold">
-                          SurfSense Response:
-                        </p>
+                        <Brain />
                         <MarkDownTest source={chat.content} />
-                      </div>
+                      </motion.div>
                     );
                   }
 
                   if (chat.type === "human") {
                     return (
-                      <div
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{
+                          duration: 0.3,
+                          ease: [0, 0.71, 0.2, 1.01],
+                          scale: {
+                            type: "spring",
+                            damping: 5,
+                            stiffness: 100,
+                            restDelta: 0.001
+                          }
+                        }}
                         className="bg-background flex flex-col gap-2 rounded-lg border p-8"
                         key={index}
                       >
+                        <User />
                         <p className="text-3xl font-semibold">
                           {chat.content}
                         </p>
-                      </div>
+                      </motion.div>
                     );
                   }
                 })}

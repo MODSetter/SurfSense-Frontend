@@ -22,9 +22,16 @@ export function HomePage() {
                 }}
                 className="relative flex flex-col gap-4 items-center justify-center px-4"
             >
-                <div className="flex items-center mb-4 text-5xl font-semibold text-gray-900 dark:text-white">
+                <motion.div
+                transition={{ delay: 1 }}
+                    animate={{
+                        scale: [1, 2, 2, 1, 1],
+                        rotate: [0, 0, 270, 270, 0],
+                        borderRadius: ["20%", "20%", "50%", "50%", "20%"],
+                    }}
+                    className="flex items-center mb-4 text-5xl font-semibold text-gray-900 dark:text-white">
                     <Image className="w-64 h-64 rounded-full" src={icon} alt="logo" />
-                </div>
+                </motion.div>
                 <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
                     SurfSense
                 </div>

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import logo from "@/public/SurfSense.png";
-import { FileCheck } from "lucide-react";
+import { Brain, FileCheck } from "lucide-react";
 
 import {
   Collapsible,
@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/table";
 import MarkDownTest from "../markdown";
 import { useRouter } from "next/navigation";
+
+import { motion } from "framer-motion"
 
 type Document = {
   BrowsingSessionId: string;
@@ -54,20 +56,20 @@ function ProtectedPage() {
   useEffect(() => {
     const verifyToken = async () => {
       const token = window.localStorage.getItem('token');
-        // console.log(token)
+      // console.log(token)
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/verify-token/${token}`);
 
         if (!response.ok) {
           throw new Error('Token verification failed');
-        }else{
+        } else {
           const NEO4JURL = localStorage.getItem('neourl');
           const NEO4JUSERNAME = localStorage.getItem('neouser');
           const NEO4JPASSWORD = localStorage.getItem('neopass');
           const OPENAIKEY = localStorage.getItem('openaikey');
-    
+
           const check = (NEO4JURL && NEO4JUSERNAME && NEO4JPASSWORD && OPENAIKEY)
-          if(!check){
+          if (!check) {
             router.push('/settings');
           }
         }
@@ -103,19 +105,19 @@ function ProtectedPage() {
     };
 
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/`, requestOptions)
-    .then(res=>res.json())
-    .then(data=> {
-      let cur = currentChat;
-      cur.push({
-        type: "normal",
-        userquery: query,
-        message: data,
+      .then(res => res.json())
+      .then(data => {
+        let cur = currentChat;
+        cur.push({
+          type: "normal",
+          userquery: query,
+          message: data,
+        });
+
+
+        setCurrentChat([...cur]);
+        setLoading(false);
       });
-  
-      
-      setCurrentChat([...cur]);
-      setLoading(false);
-    });    
   };
 
   const getDocDescription = async (document: Document) => {
@@ -163,22 +165,33 @@ function ProtectedPage() {
                     Welcome to SurfSense General Chat
                   </h1>
                   <p className="text-muted-foreground leading-normal">
-                  🧠 Ask Your Knowledge Graph Brain About Your Saved Content🧠
+                    🧠 Ask Your Knowledge Graph Brain About Your Saved Content🧠
                   </p>
                 </div>
+
                 {currentChat.map((chat, index) => {
                   // console.log("chat", chat);
                   if (chat.type === "normal") {
                     return (
-                      <div
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{
+                          duration: 0.3,
+                          ease: [0, 0.71, 0.2, 1.01],
+                          scale: {
+                            type: "spring",
+                            damping: 5,
+                            stiffness: 100,
+                            restDelta: 0.001
+                          }
+                        }}
                         className="bg-background flex flex-col gap-2 rounded-lg border p-8"
                         key={index}
                       >
+                        <Brain />
                         <p className="text-3xl font-semibold">
                           {chat.userquery}
-                        </p>
-                        <p className="font-sm font-semibold">
-                          SurfSense Response:
                         </p>
                         <MarkDownTest source={chat.message.response} />
                         <p className="font-sm font-semibold">
@@ -257,24 +270,39 @@ function ProtectedPage() {
                             );
                           })
                         }
-                      </div>
+                      </motion.div>
                     );
                   }
 
                   if (chat.type === "description") {
                     return (
-                      <div
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{
+                          duration: 0.3,
+                          ease: [0, 0.71, 0.2, 1.01],
+                          scale: {
+                            type: "spring",
+                            damping: 5,
+                            stiffness: 100,
+                            restDelta: 0.001
+                          }
+                        }}
                         className="bg-background flex flex-col gap-2 rounded-lg border p-8"
                         key={index}
                       >
+                        <Brain />
                         <p className="text-3xl font-semibold">
                           {chat.doctitle}
                         </p>
                         <MarkDownTest source={chat.message} />
-                      </div>
+                      </motion.div>
                     );
                   }
                 })}
+
+
               </div>
               <div className="h-px w-full"></div>
             </div>
