@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { MainNavbar } from "@/components/homepage/NavBar";
 import { Toaster } from "@/components/ui/toaster"
 import { Footer } from "@/components/homepage/Footer";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,33 +42,48 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+	return (
+		<html lang="en">
+			<head>
+				<Script src="https://www.googletagmanager.com/gtag/js?id=G-MGF457ZF0Y" strategy="afterInteractive" />
+				<Script id="google-analytics" strategy="afterInteractive" >
+					{
+						`
+					  	window.dataLayer = window.dataLayer || [];
+  						function gtag(){dataLayer.push(arguments);}
+  						gtag('js', new Date());
 
-          <div className="flex flex-col justify-between h-screen">
-            <MainNavbar />
-            <div className="grow">
-              {children}
-            </div>
-            <Footer />
-          </div>
+  						gtag('config', 'G-MGF457ZF0Y');
+
+					`
+					}
+				</Script>
+			</head>
+			<body className={inter.className}>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="system"
+					enableSystem
+					disableTransitionOnChange
+				>
+
+					<div className="flex flex-col justify-between h-screen">
+						<MainNavbar />
+						<div className="grow">
+							{children}
+						</div>
+						<Footer />
+					</div>
 
 
 
-          <Toaster />
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+					<Toaster />
+				</ThemeProvider>
+			</body>
+		</html>
+	);
 }
