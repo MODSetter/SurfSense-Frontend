@@ -39,6 +39,7 @@ export function HomePage() {
                 <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
                     SurfSense
                 </div>
+                <div className="text-xs font-semibold text-red-500"> UPDATE 21st August 2024 : Added options to save chats & Critical Notifications Dashboard</div>
                 <div className="text-xs font-semibold text-red-500"> 21st August 2024 : Chrome Extension is currently outdated on web store use offline build for the time being</div>
                 <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
                     A Knowledge Graph 🧠 Brain 🧠 for World Wide Web Surfers.
