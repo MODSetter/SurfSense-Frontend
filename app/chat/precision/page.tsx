@@ -164,22 +164,11 @@ const page = () => {
                                             onChange={(e) => setSessionid(e.target.value)}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         />
+                                        <p className="text-[0.8rem] text-muted-foreground">* Optional</p>
                                     </div>
-                                    {/* <div>
-                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                            Web Page Title
-                                        </label>
-                                        <input
-                                            name="email"
-                                            id="email"
-                                            value={webpagetitle}
-                                            onChange={(e) => setWebpagetitle(e.target.value)}
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        />
-                                    </div> */}
                                     <div>
                                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                            Web Page URL
+                                            Web Page URL Contains
                                         </label>
                                         <input
                                             name="email"
@@ -188,48 +177,44 @@ const page = () => {
                                             onChange={(e) => setWebpageurl(e.target.value)}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         />
+                                        <p className="text-[0.8rem] text-muted-foreground">* Optional</p>
                                     </div>
-                                    {/* <div>
-                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                            Web Page Content
-                                        </label>
-                                        <input
-                                            name="email"
-                                            id="email"
-                                            value={webpagecontent}
-                                            onChange={(e) => setWebpagecontent(e.target.value)}
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        />
-                                    </div> */}
-                                    <div className="flex gap-1">
-                                        <input
-                                            name="timelower"
-                                            id="timelower"
-                                            type="number"
-                                            value={visitlower}
-                                            onChange={(e) => setVisitlower(e.target.valueAsNumber)}
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="milliseconds"
-                                        />
-                                        <div className="text-sm font-medium text-gray-900 dark:text-white self-center">
-                                            {"<"}
+
+                                    <div className="flex flex-col">
+                                        <div className="flex gap-1">
+                                            <input
+                                                name="timelower"
+                                                id="timelower"
+                                                type="number"
+                                                value={visitlower}
+                                                onChange={(e) => setVisitlower(e.target.valueAsNumber)}
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                placeholder="milliseconds"
+                                            />
+                                            <div className="text-sm font-medium text-gray-900 dark:text-white self-center">
+                                                {"<"}
+                                            </div>
+                                            <div className="text-sm font-medium text-gray-900 dark:text-white grow">
+                                                Visit Duration
+                                            </div>
+                                            <div className="text-sm font-medium text-gray-900 dark:text-white self-center">
+                                                {"<"}
+                                            </div>
+                                            <input
+                                                name="timeupper"
+                                                id="timeupper"
+                                                type="number"
+                                                value={visitupper}
+                                                onChange={(e) => setVisitupper(e.target.valueAsNumber)}
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                placeholder="milliseconds"
+                                            />
                                         </div>
-                                        <div className="text-sm font-medium text-gray-900 dark:text-white grow">
-                                            Visit Duration
-                                        </div>
-                                        <div className="text-sm font-medium text-gray-900 dark:text-white self-center">
-                                            {"<"}
-                                        </div>
-                                        <input
-                                            name="timeupper"
-                                            id="timeupper"
-                                            type="number"
-                                            value={visitupper}
-                                            onChange={(e) => setVisitupper(e.target.valueAsNumber)}
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="milliseconds"
-                                        />
+                                        <p className="text-[0.8rem] text-muted-foreground">* Optional</p>
+
                                     </div>
+
+
 
                                     <div className="flex flex-col gap-1">
                                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -271,9 +256,9 @@ const page = () => {
 
         } else {
             return (
-            <div className="mt-52 p-8 flex justify-center">
-                <h1 className="mx-auto text-7xl">No Web History Found</h1>
-            </div>
+                <div className="mt-52 p-8 flex justify-center">
+                    <h1 className="mx-auto text-7xl">No Web History Found</h1>
+                </div>
             )
         }
     }

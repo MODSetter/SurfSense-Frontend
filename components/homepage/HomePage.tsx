@@ -1,16 +1,20 @@
 "use client";
-
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect } from "react";
 import { AuroraBackground } from "../ui/aurora-background";
 
 import icon from "../../public/SurfSense.png"
 import Image from "next/image";
 import Link from "next/link";
 import { Github } from "lucide-react";
+import FeaturesSectionDemo from "./StartSection";
+import { ThreeDCardDemo } from "./FeatureSection";
+import { LampDemo } from "./LampSection";
 
 export function HomePage() {
+    
     return (
+        <>
         <AuroraBackground>
             <motion.div
                 initial={{ opacity: 0.0, y: 40 }}
@@ -35,7 +39,7 @@ export function HomePage() {
                 <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
                     SurfSense
                 </div>
-                {/* <div className="text-lg font-semibold dark:text-neutral-200">Beta v0.0.1</div> */}
+                <div className="text-xs font-semibold text-red-500"> 21st August 2024 : Chrome Extension is currently outdated on web store use offline build for the time being</div>
                 <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
                     A Knowledge Graph 🧠 Brain 🧠 for World Wide Web Surfers.
                 </div>
@@ -62,5 +66,10 @@ export function HomePage() {
 
             </motion.div>
         </AuroraBackground>
+        <FeaturesSectionDemo />
+        <ThreeDCardDemo />
+        <LampDemo />
+        </>
+        
     );
 }

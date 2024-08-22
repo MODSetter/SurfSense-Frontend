@@ -6,6 +6,7 @@ import { MainNavbar } from "@/components/homepage/NavBar";
 import { Toaster } from "@/components/ui/toaster"
 import { Footer } from "@/components/homepage/Footer";
 import Script from "next/script";
+import { Toast, ToastClose, ToastDescription, ToastTitle } from "@/components/ui/toast";
 
 const inter = Inter({ subsets: ["latin"] });
 

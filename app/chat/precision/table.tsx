@@ -40,6 +40,7 @@ import Image from "next/image";
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
+import { useToast } from "@/components/ui/use-toast"
 
 
 export type Docs = {
@@ -77,25 +78,29 @@ export const columns: ColumnDef<Docs>[] = [
   },
   {
     accessorKey: "BrowsingSessionId",
-    header: "Session Id",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("BrowsingSessionId")}</div>
-    ),
-  },
-  {
-    accessorKey: "VisitedWebPageURL",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          URL
+          Session Id
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("VisitedWebPageURL")}</div>,
+    cell: ({ row }) => {
+      //   const amount = parseFloat(row.getValue("amount"))
+      return <div className="text-right font-medium">{row.getValue("BrowsingSessionId")}</div>
+    },
+  },
+    {
+    accessorKey: "VisitedWebPageURL",
+    header: () => <div className="text-right">URL</div>,
+    cell: ({ row }) => {
+      //   const amount = parseFloat(row.getValue("amount"))
+      return <div className="text-right font-medium">{row.getValue("VisitedWebPageURL")}</div>
+    },
   },
   {
     accessorKey: "VisitedWebPageTitle",
@@ -107,7 +112,17 @@ export const columns: ColumnDef<Docs>[] = [
   },
   {
     accessorKey: "VisitedWebPageDateWithTimeInISOString",
-    header: () => <div className="text-right">Date Time</div>,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date Time
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => {
       //   const amount = parseFloat(row.getValue("amount"))
       return <div className="text-right font-medium">{row.getValue("VisitedWebPageDateWithTimeInISOString")}</div>
@@ -115,7 +130,17 @@ export const columns: ColumnDef<Docs>[] = [
   },
   {
     accessorKey: "VisitedWebPageVisitDurationInMilliseconds",
-    header: () => <div className="text-right">Visit Duration (seconds)</div>,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Visit Duration (seconds)
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => {
       //   const amount = parseFloat(row.getValue("amount"))
       return <div className="text-right font-medium">{parseInt(row.getValue("VisitedWebPageVisitDurationInMilliseconds")) / 1000}</div>
@@ -125,8 +150,10 @@ export const columns: ColumnDef<Docs>[] = [
 
 export function DataTableDemo({ data }: { data: Docs[] }) {
   const router = useRouter();
+  const { toast } = useToast()
   const [route, setRoute] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [chattitle, setChattitle] = useState<string | null>(null);
 
   const [currentChat, setCurrentChat] = useState<any[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -202,6 +229,10 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
       .then(res => res.json())
       .then(data => {
         // console.log(data)
+        if(currentChat.length === 2){
+          setChattitle(query)
+        }
+
         let cur = currentChat;
         cur.push({
           type: "ai",
@@ -213,6 +244,41 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
         setLoading(false);
       });
   };
+
+  const saveChat = async () => {
+    const token = window.localStorage.getItem('token');
+      // console.log(token)
+      try {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token: token,
+            type: "multidoc",
+            title: chattitle,
+            chats_list: JSON.stringify(currentChat)
+          }),
+        };
+    
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL!}/user/chat/save`,
+          requestOptions
+        );
+        if (!response.ok) {
+          throw new Error('Token verification failed');
+        } else {
+          const res = await response.json();
+          toast({
+            title: res.message,
+          })
+          router.push('/chat/manage');
+        }
+        
+      } catch (error) {
+        window.localStorage.removeItem('token');
+        router.push('/login');
+      }
+  }
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -495,6 +561,37 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
                       </div>
                     </div>
                   </form>
+                  <div className="flex justify-center">
+                    {chattitle ? (  <button 
+                    onClick={() => saveChat()}
+                    className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+                      <span className="absolute inset-0 overflow-hidden rounded-full">
+                        <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                      </span>
+                      <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10 ">
+                        <span>
+                          Save Chat
+                        </span>
+                        <svg
+                          fill="none"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10.75 8.75L14.25 12L10.75 15.25"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="1.5"
+                          />
+                        </svg>
+                      </div>
+                      <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+                    </button>) : (<></>)}
+                  </div>
+
                 </div>
               </div>
             </div>

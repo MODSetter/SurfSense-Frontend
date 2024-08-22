@@ -1,7 +1,8 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { revalidatePath } from 'next/cache'
 
 
 
@@ -11,6 +12,8 @@ export const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+      
 
   const validateForm = () => {
     if (!username || !password) {
@@ -44,7 +47,12 @@ export const LoginForm = () => {
       if (response.ok) {
         const data = await response.json();
         window.localStorage.setItem('token', data.access_token);
-        router.push('/chat');
+        
+
+        // router.push({ pathname: "/chat", query: { u: "true" } });
+        window.location.href = "/chat"
+        // router.push('/chat');
+        // router.refresh()
         // navigate('/protected');
       } else {
         const errorData = await response.json();
@@ -55,7 +63,6 @@ export const LoginForm = () => {
       setError('An error occurred. Please try again later.');
     }
   };
-
 
   return (
     <>

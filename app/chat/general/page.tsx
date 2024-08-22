@@ -20,6 +20,7 @@ import MarkDownTest from "../markdown";
 import { useRouter } from "next/navigation";
 
 import { motion } from "framer-motion"
+import { useToast } from "@/components/ui/use-toast";
 
 type Document = {
   BrowsingSessionId: string;
@@ -49,9 +50,12 @@ type Document = {
 function ProtectedPage() {
   //   const navigate = useNavigate();
   const router = useRouter();
+  const { toast } = useToast()
   const [loading, setLoading] = useState<boolean>(false);
 
   const [currentChat, setCurrentChat] = useState<any[]>([]);
+
+  const [chattitle, setChattitle] = useState<string>("");
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -108,6 +112,9 @@ function ProtectedPage() {
       .then(res => res.json())
       .then(data => {
         let cur = currentChat;
+        if(currentChat.length === 0){
+          setChattitle(query)
+        }
         cur.push({
           type: "normal",
           userquery: query,
@@ -153,6 +160,41 @@ function ProtectedPage() {
     // console.log(document);
   };
 
+  const saveChat = async () => {
+    const token = window.localStorage.getItem('token');
+      // console.log(token)
+      try {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token: token,
+            type: "general",
+            title: chattitle,
+            chats_list: JSON.stringify(currentChat)
+          }),
+        };
+    
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL!}/user/chat/save`,
+          requestOptions
+        );
+        if (!response.ok) {
+          throw new Error('Token verification failed');
+        } else {
+          const res = await response.json();
+          toast({
+            title: res.message,
+          })
+          router.push('/chat/manage');
+        }
+        
+      } catch (error) {
+        window.localStorage.removeItem('token');
+        router.push('/login');
+      }
+  }
+
   if (currentChat) {
     return (
       <>
@@ -165,7 +207,7 @@ function ProtectedPage() {
                     Welcome to SurfSense General Chat
                   </h1>
                   <p className="text-muted-foreground leading-normal">
-                    🧠 Ask Your Knowledge Graph Brain About Your Saved Content🧠
+                    🧠 Ask Your Knowledge Graph Brain About Your Saved Content 🧠
                   </p>
                 </div>
 
@@ -359,6 +401,37 @@ function ProtectedPage() {
                       </div>
                     </div>
                   </form>
+                  <div className="flex justify-center">
+                    {chattitle ? (  <button 
+                    onClick={() => saveChat()}
+                    className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+                      <span className="absolute inset-0 overflow-hidden rounded-full">
+                        <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                      </span>
+                      <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10 ">
+                        <span>
+                          Save Chat
+                        </span>
+                        <svg
+                          fill="none"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10.75 8.75L14.25 12L10.75 15.25"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="1.5"
+                          />
+                        </svg>
+                      </div>
+                      <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+                    </button>) : (<></>)}
+                  </div>
+
                 </div>
               </div>
             </div>

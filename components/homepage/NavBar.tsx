@@ -1,11 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HoveredLink, Menu, MenuItem, ProductItem } from "../ui/navbar-menu";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
 import Image from "next/image";
 import logo from "../../public/SurfSense.png"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+import { Bell } from "lucide-react";
 
 export function MainNavbar() {
     return (
@@ -17,6 +20,41 @@ export function MainNavbar() {
 
 function Navbar({ className }: { className?: string }) {
     const [active, setActive] = useState<string | null>(null);
+    const { toast } = useToast()
+
+
+    const [loggedin, setLoggedin] = useState<boolean>(false);
+    const router = useRouter();
+    useEffect(() => {
+        const verifyToken = async () => {
+            const token = window.localStorage.getItem('token');
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/verify-token/${token}`);
+
+                if (!response.ok) {
+                    throw new Error('Token verification failed');
+                } else {
+                    setLoggedin(true)
+                }
+            } catch (error) {
+                window.localStorage.removeItem('token');
+                setLoggedin(false)
+            }
+
+        };
+
+        verifyToken();
+    }, [router]);
+
+    const logOut = () => {
+        window.localStorage.removeItem('token');
+        setLoggedin(false)
+        toast({
+            title: "Logged Out Successfully",
+        })
+        router.push('/');
+    }
+
     return (
         <div
             className={cn("fixed top-10 inset-x-0 max-w-7xl mx-auto z-50", className)}
@@ -28,29 +66,53 @@ function Navbar({ className }: { className?: string }) {
                 </Link>
 
                 <div className="flex gap-2">
-                    <Link href={"/login"}>
-                        <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
-                            Log In
-                        </button>
-                    </Link>
 
-                    <Link href={"/signup"}>
-                        <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
-                            Sign Up
-                        </button>
-                    </Link>
+                    {
+                        !loggedin ? (<a href={"/login"}>
+                            <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
+                                Log In
+                            </button>
+                        </a>) : (<>
+                            <button onClick={() => logOut()} className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
+                                Log Out
+                            </button>
+                        </>)
+                    }
 
-                    <Link href={"/settings"}>
-                        <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
-                            Settings
-                        </button>
-                    </Link>
+                    {
+                        !loggedin ? (<Link href={"/signup"}>
+                            <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
+                                Sign Up
+                            </button>
+                        </Link>) : (<Link href={"/chat/manage"}>
+                            <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
+                                Saved Chats
+                            </button>
+                        </Link>)
+                    }
 
-                    <Link href={"/chat"} className="grow">
-                        <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
-                            🧠
-                        </button>
-                    </Link>
+                    {
+                        loggedin ? (<>
+                            <Link href={"/settings"}>
+                                <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
+                                    Settings
+                                </button>
+                            </Link>
+                            <Link href={"/notifications"}>
+                                <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
+                                    🔔
+                                </button>
+                            </Link>
+
+
+                            <Link href={"/chat"} className="grow">
+                                <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
+                                    🧠
+                                </button>
+                            </Link>
+                        </>) : (<></>)
+                    }
+
 
 
 
