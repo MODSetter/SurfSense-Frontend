@@ -22,7 +22,7 @@ export function ThreeDCardDemo() {
                             translateZ="60"
                             className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
                         >
-                            Use a easy to use chrome extenstion to save content effortlessly.
+                            Use a easy to use extenstion to save content effortlessly.
                         </CardItem>
                         <CardItem translateZ="100" className="w-full mt-4">
                             <Image
