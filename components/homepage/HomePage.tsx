@@ -39,7 +39,7 @@ export function HomePage() {
                 <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
                     SurfSense
                 </div>
-                <div className="text-xs font-semibold text-green-500"> UPDATE 24st August 2024 : SurfSense is now cross browser supported. Get any browser builds from https://github.com/MODSetter/SurfSense until its approved in all webstores.</div>
+                <div className="text-xs font-semibold text-green-500"> UPDATE 24st August 2024 : SurfSense Extension is now cross browser supported. Get any browser builds from https://github.com/MODSetter/SurfSense until its approved in all webstores.</div>
                 <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
                     A Knowledge Graph 🧠 Brain 🧠 for World Wide Web Surfers.
                 </div>
