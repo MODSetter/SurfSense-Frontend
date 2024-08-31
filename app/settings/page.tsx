@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const FillEnvVariables = () => {
@@ -21,6 +21,17 @@ const FillEnvVariables = () => {
         setError('');
         return true;
     };
+
+    useEffect(() => {
+        const setVals = async () => {
+            setNeourl(localStorage.getItem('neourl') || '');
+            setNeouser(localStorage.getItem('neouser') || '');
+            setNeopass(localStorage.getItem('neopass') || '');
+            setOpenaiKey(localStorage.getItem('openaikey') || '');
+        };
+    
+        setVals();
+      }, []);
 
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
