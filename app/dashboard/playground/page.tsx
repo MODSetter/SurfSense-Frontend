@@ -35,6 +35,7 @@ const page = () => {
 
           const res = await req.json()
 
+
           setDocs(res.documents)
         };
     
