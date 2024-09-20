@@ -68,7 +68,7 @@ const page = () => {
         toast({
           title: res.message,
         })
-        window.location.href = '/chat/manage'
+        window.location.href = '/dashboard/chat/manage'
         // router.push('/chat/manage')
       }
     } catch (error) {
@@ -94,13 +94,13 @@ const page = () => {
               <TableCell>{chat.title}</TableCell>
               <TableCell>
                 {chat.type === "general" ? (
-                  <Link href={`/chat/manage/general/${chat.id}`}>
+                  <Link href={`/dashboard/chat/manage/general/${chat.id}`}>
                     <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
                       Continue
                     </button>
                   </Link>
                 ) : (
-                  <Link href={`/chat/manage/multidoc/${chat.id}`}>
+                  <Link href={`/dashboard/chat/manage/multidoc/${chat.id}`}>
                     <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
                       Continue
                     </button>

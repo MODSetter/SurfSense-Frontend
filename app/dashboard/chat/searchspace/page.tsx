@@ -2,7 +2,16 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import logo from "@/public/SurfSense.png";
-import { Brain, FileCheck } from "lucide-react";
+import { FileCheck } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 import {
   Collapsible,
@@ -10,110 +19,117 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-} from "@/components/ui/table";
-import MarkDownTest from "../markdown";
+import { Button } from "@/components/ui/button";
+
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import MarkDownTest from "@/app/markdown";
 import { useRouter } from "next/navigation";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
 
-type Document = {
-  BrowsingSessionId: string;
-  VisitedWebPageURL: string;
-  VisitedWebPageTitle: string;
-  VisitedWebPageDateWithTimeInISOString: string;
-  VisitedWebPageReffererURL: string;
-  VisitedWebPageVisitDurationInMilliseconds: number;
-  VisitedWebPageContent: string;
-};
-
-// type Description = {
-//   response: string;
-// };
-
-// type NormalResponse = {
-//   response: string;
-//   relateddocs: Document[];
-// };
-
-// type ChatMessage = {
-//   type: string;
-//   userquery: string;
-//   message: NormalResponse | string;
+// type Document = {
+//   BrowsingSessionId: string;
+//   VisitedWebPageURL: string;
+//   VisitedWebPageTitle: string;
+//   VisitedWebPageDateWithTimeInISOString: string;
+//   VisitedWebPageReffererURL: string;
+//   VisitedWebPageVisitDurationInMilliseconds: number;
+//   VisitedWebPageContent: string;
 // };
 
 function ProtectedPage() {
-  //   const navigate = useNavigate();
   const router = useRouter();
-  const { toast } = useToast()
+  const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
   const [currentChat, setCurrentChat] = useState<any[]>([]);
 
   const [chattitle, setChattitle] = useState<string>("");
 
+  const [spaces, setSpaces] = useState<string[]>(['GENERAL']);
+
+  const [searchspace, setSearchSpace] = useState<string>('GENERAL');
+
   useEffect(() => {
     const verifyToken = async () => {
-      const token = window.localStorage.getItem('token');
+      const token = window.localStorage.getItem("token");
       // console.log(token)
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/verify-token/${token}`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL!}/verify-token/${token}`
+        );
 
         if (!response.ok) {
-          throw new Error('Token verification failed');
+          throw new Error("Token verification failed");
         } else {
-          const NEO4JURL = localStorage.getItem('neourl');
-          const NEO4JUSERNAME = localStorage.getItem('neouser');
-          const NEO4JPASSWORD = localStorage.getItem('neopass');
-          const OPENAIKEY = localStorage.getItem('openaikey');
+          const OPENAIKEY = localStorage.getItem("openaikey");
 
-          const check = (NEO4JURL && NEO4JUSERNAME && NEO4JPASSWORD && OPENAIKEY)
+          const check = OPENAIKEY;
           if (!check) {
-            router.push('/settings');
+            router.push("/dashboard/settings");
           }
         }
       } catch (error) {
-        window.localStorage.removeItem('token');
-        router.push('/login');
+        window.localStorage.removeItem("token");
+        router.push("/login");
+      }
+    };
+
+    const loadSpaces = async () => {
+      const token = window.localStorage.getItem("token");
+      // console.log(token)
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL!}/searchspaces/${token}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Token verification failed");
+        } else {
+          const res = await response.json()
+          console.log(res)
+          setSpaces(res.search_spaces.map((ss_entry: any) => {
+            return ss_entry.search_space
+          }))
+        }
+      } catch (error) {
+        // window.localStorage.removeItem("token");
+        // router.push("/login");
       }
     };
 
     verifyToken();
+    loadSpaces();
   }, [router]);
 
   const handleSubmit = async (formData: any) => {
-    setLoading(true);
+
     const query = formData.get("query");
 
-    if (!query) {
-      console.log("Query cant be empty!!");
+    if (!query || !searchspace) {
+      console.log("Query or SearchSpace cant be empty!!");
       return;
     }
 
+    setLoading(true);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         query: query,
-        neourl: localStorage.getItem('neourl'),
-        neouser: localStorage.getItem('neouser'),
-        neopass: localStorage.getItem('neopass'),
-        openaikey: localStorage.getItem('openaikey'),
-        apisecretkey: process.env.NEXT_PUBLIC_API_SECRET_KEY
+        search_space: searchspace,
+        openaikey: localStorage.getItem("openaikey"),
+        token: localStorage.getItem("token"),
       }),
     };
 
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/`, requestOptions)
-      .then(res => res.json())
-      .then(data => {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/chat/`, requestOptions)
+      .then((res) => res.json())
+      .then((data) => {
         let cur = currentChat;
-        if(currentChat.length === 0){
-          setChattitle(query)
+        if (currentChat.length === 0) {
+          setChattitle(query);
         }
         cur.push({
           type: "normal",
@@ -121,79 +137,57 @@ function ProtectedPage() {
           message: data,
         });
 
-
         setCurrentChat([...cur]);
         setLoading(false);
       });
   };
 
-  const getDocDescription = async (document: Document) => {
-    setLoading(true);
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        query: JSON.stringify(document),
-        neourl: localStorage.getItem('neourl'),
-        neouser: localStorage.getItem('neouser'),
-        neopass: localStorage.getItem('neopass'),
-        openaikey: localStorage.getItem('openaikey'),
-        apisecretkey: process.env.NEXT_PUBLIC_API_SECRET_KEY
-      }),
-    };
-
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL!}/kb/doc`,
-      requestOptions
-    );
-    const res = await response.json();
-
+  const getDocDescription = (doc: any) => {
     let cur = currentChat;
     cur.push({
       type: "description",
-      doctitle: document.VisitedWebPageTitle,
-      message: res.response,
+      doctitle: doc.VisitedWebPageTitle,
+      message: doc.VisitedWebPageContent,
     });
 
     setLoading(false);
     setCurrentChat([...cur]);
-    // console.log(document);
-  };
+  }
+
 
   const saveChat = async () => {
-    const token = window.localStorage.getItem('token');
-      // console.log(token)
-      try {
-        const requestOptions = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            token: token,
-            type: "general",
-            title: chattitle,
-            chats_list: JSON.stringify(currentChat)
-          }),
-        };
-    
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL!}/user/chat/save`,
-          requestOptions
-        );
-        if (!response.ok) {
-          throw new Error('Token verification failed');
-        } else {
-          const res = await response.json();
-          toast({
-            title: res.message,
-          })
-          router.push('/chat/manage');
-        }
-        
-      } catch (error) {
-        window.localStorage.removeItem('token');
-        router.push('/login');
+    const token = window.localStorage.getItem("token");
+    // console.log(token)
+    try {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: token,
+          type: "general",
+          title: chattitle,
+          chats_list: JSON.stringify(currentChat),
+        }),
+      };
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL!}/user/chat/save`,
+        requestOptions
+      );
+      if (!response.ok) {
+        throw new Error("Token verification failed");
+      } else {
+        const res = await response.json();
+        toast({
+          title: res.message,
+        });
+        router.push("/dashboard/chat/manage");
       }
-  }
+    } catch (error) {
+      window.localStorage.removeItem("token");
+      router.push("/login");
+    }
+  };
 
   if (currentChat) {
     return (
@@ -204,10 +198,10 @@ function ProtectedPage() {
               <div className="mx-auto max-w-4xl px-4 flex flex-col gap-3">
                 <div className="bg-background flex flex-col gap-2 rounded-lg border p-8">
                   <h1 className="text-sm font-semibold">
-                    Welcome to SurfSense General Chat
+                    Welcome to SurfSense Chat on Search Spaces
                   </h1>
                   <p className="text-muted-foreground leading-normal">
-                    🧠 Ask Your Knowledge Graph Brain About Your Saved Content 🧠
+                    🧠 Ask Your Personal Brain About Your Content 🧠
                   </p>
                 </div>
 
@@ -225,13 +219,13 @@ function ProtectedPage() {
                             type: "spring",
                             damping: 5,
                             stiffness: 100,
-                            restDelta: 0.001
-                          }
+                            restDelta: 0.001,
+                          },
                         }}
                         className="bg-background flex flex-col gap-2 rounded-lg border p-8"
                         key={index}
                       >
-                        <Brain />
+                        <Image className="hidden sm:block w-8 h-8 mr-2 rounded-full" src={logo} alt="logo" />
                         <p className="text-3xl font-semibold">
                           {chat.userquery}
                         </p>
@@ -243,6 +237,8 @@ function ProtectedPage() {
                         {
                           //@ts-ignore
                           chat.message.relateddocs.map((doc) => {
+
+
                             return (
                               <Collapsible className="border rounded-lg p-3">
                                 <CollapsibleTrigger className="flex justify-between gap-2 mb-2">
@@ -300,13 +296,15 @@ function ProtectedPage() {
                                       </TableRow>
                                     </TableBody>
                                   </Table>
-                                  <button
-                                    type="button"
+
+                                  <Button
+                                    variant="outline"
+                                    className="bg-red-500/10"
                                     onClick={() => getDocDescription(doc)}
-                                    className="text-gray-900 w-full hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
                                   >
-                                    Get More Information
-                                  </button>
+                                    Show Summary
+                                  </Button>
+
                                 </CollapsibleContent>
                               </Collapsible>
                             );
@@ -328,13 +326,13 @@ function ProtectedPage() {
                             type: "spring",
                             damping: 5,
                             stiffness: 100,
-                            restDelta: 0.001
-                          }
+                            restDelta: 0.001,
+                          },
                         }}
                         className="bg-background flex flex-col gap-2 rounded-lg border p-8"
                         key={index}
                       >
-                        <Brain />
+                        <Image className="hidden sm:block w-8 h-8 mr-2 rounded-full" src={logo} alt="logo" />
                         <p className="text-3xl font-semibold">
                           {chat.doctitle}
                         </p>
@@ -343,18 +341,16 @@ function ProtectedPage() {
                     );
                   }
                 })}
-
-
               </div>
               <div className="h-px w-full"></div>
             </div>
             <div className="from-muted/30 to-muted/30 animate-in dark:from-background/10 dark:to-background/80 inset-x-0 bottom-0 w-full duration-300 ease-in-out peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] dark:from-10%">
               <div className="mx-auto sm:max-w-4xl sm:px-4">
-
-                <div className={loading ? "rounded-md p-4 w-full my-4" : "hidden"}>
+                <div
+                  className={loading ? "rounded-md p-4 w-full my-4" : "hidden"}
+                >
                   <div className="animate-pulse flex space-x-4">
-                    <div className="rounded-full bg-slate-700 h-10 w-10">
-                    </div>
+                    <div className="rounded-full bg-slate-700 h-10 w-10"></div>
                     <div className="flex-1 space-y-6 py-1">
                       <div className="h-2 bg-slate-700 rounded"></div>
                       <div className="space-y-3">
@@ -370,6 +366,22 @@ function ProtectedPage() {
 
                 <div className="bg-background space-y-4 border-t px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
                   <form action={handleSubmit}>
+                    <div className="my-2">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="outline">Search Space: {searchspace}</Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56">
+                          <DropdownMenuLabel>Search Space</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuRadioGroup value={searchspace} onValueChange={setSearchSpace}>
+                            {spaces.map((space: string) => {
+                              return <DropdownMenuRadioItem value={space}>{space}</DropdownMenuRadioItem>
+                            })}
+                          </DropdownMenuRadioGroup>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                     <div className="bg-background relative flex max-h-60 w-full grow flex-col overflow-hidden px-8 sm:rounded-md sm:border sm:px-12">
                       <Image
                         className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input shadow-sm hover:bg-accent hover:text-accent-foreground h-9 w-9 bg-background absolute left-0 top-[13px] size-8 rounded-full p-0 sm:left-4"
@@ -402,36 +414,38 @@ function ProtectedPage() {
                     </div>
                   </form>
                   <div className="flex justify-center">
-                    {chattitle ? (  <button 
-                    onClick={() => saveChat()}
-                    className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
-                      <span className="absolute inset-0 overflow-hidden rounded-full">
-                        <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                      </span>
-                      <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10 ">
-                        <span>
-                          Save Chat
+                    {chattitle ? (
+                      <button
+                        onClick={() => saveChat()}
+                        className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block"
+                      >
+                        <span className="absolute inset-0 overflow-hidden rounded-full">
+                          <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                         </span>
-                        <svg
-                          fill="none"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          width="16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M10.75 8.75L14.25 12L10.75 15.25"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="1.5"
-                          />
-                        </svg>
-                      </div>
-                      <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
-                    </button>) : (<></>)}
+                        <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10 ">
+                          <span>Save Chat</span>
+                          <svg
+                            fill="none"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M10.75 8.75L14.25 12L10.75 15.25"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="1.5"
+                            />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+                      </button>
+                    ) : (
+                      <></>
+                    )}
                   </div>
-
                 </div>
               </div>
             </div>

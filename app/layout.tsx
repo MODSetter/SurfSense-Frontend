@@ -6,12 +6,11 @@ import { MainNavbar } from "@/components/homepage/NavBar";
 import { Toaster } from "@/components/ui/toaster"
 import { Footer } from "@/components/homepage/Footer";
 import Script from "next/script";
-import { Toast, ToastClose, ToastDescription, ToastTitle } from "@/components/ui/toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "SurfSense - A Knowledge Graph Brain for World Wide Web Surfers.",
+	title: "SurfSense - Personal AI Assistant for World Wide Web Surfers.",
 	description:
 		"Save anything you see or browse on the Internet and save it to ask AI about it.",
 	openGraph: {
@@ -28,7 +27,7 @@ export const metadata: Metadata = {
 		card: "summary_large_image",
 		site: "https://surfsense.net",
 		creator: "https://surfsense.net",
-		title: "SurfSense - A Knowledge Graph Brain for World Wide Web Surfers.",
+		title: "SurfSense - Personal AI Assistant for World Wide Web Surfers.",
 		description:
 			"Save anything you see or browse on the Internet and save it to ask AI about it.",
 		images: [
@@ -36,7 +35,7 @@ export const metadata: Metadata = {
 				url: "https://surfsense.net/og-image.png",
 				width: 1200,
 				height: 630,
-				alt: "SurfSense - A Knowledge Graph Brain for World Wide Web Surfers.",
+				alt: "SurfSense - Personal AI Assistant for World Wide Web Surfers.",
 			},
 		],
 	},
@@ -74,7 +73,7 @@ export default function RootLayout({
 
 					<div className="flex flex-col justify-between h-screen">
 						<MainNavbar />
-						<div className="grow">
+						<div className="grow mt-24">
 							{children}
 						</div>
 						<Footer />

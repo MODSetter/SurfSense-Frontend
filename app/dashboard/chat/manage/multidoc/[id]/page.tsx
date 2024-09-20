@@ -1,27 +1,11 @@
 "use client"
-import { ArrowUpDown, Brain, ChevronDown, User } from "lucide-react";
+import { User } from "lucide-react";
 
 import { motion } from "framer-motion";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import logo from "@/public/SurfSense.png";
-import MarkDownTest from "@/app/chat/markdown";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import MarkDownTest from "@/app/markdown";
+
 import Image from "next/image";
 
 import { useRouter } from "next/navigation";
@@ -84,14 +68,11 @@ const page = ({ params: { id } }: PageProps) => {
         if (!response.ok) {
           throw new Error("Token verification failed");
         } else {
-          const NEO4JURL = localStorage.getItem("neourl");
-          const NEO4JUSERNAME = localStorage.getItem("neouser");
-          const NEO4JPASSWORD = localStorage.getItem("neopass");
           const OPENAIKEY = localStorage.getItem("openaikey");
 
-          const check = NEO4JURL && NEO4JUSERNAME && NEO4JPASSWORD && OPENAIKEY;
+          const check = OPENAIKEY;
           if (!check) {
-            router.push("/settings");
+            router.push("/dashboard/settings");
           }
         }
       } catch (error) {
@@ -127,11 +108,8 @@ const page = ({ params: { id } }: PageProps) => {
       body: JSON.stringify({
         query: query,
         chat: currentChat,
-        neourl: localStorage.getItem("neourl"),
-        neouser: localStorage.getItem("neouser"),
-        neopass: localStorage.getItem("neopass"),
-        openaikey: localStorage.getItem("openaikey"),
-        apisecretkey: process.env.NEXT_PUBLIC_API_SECRET_KEY,
+        openaikey: localStorage.getItem('openaikey'),
+        token: localStorage.getItem('token'),
       }),
     };
 
@@ -174,11 +152,11 @@ const page = ({ params: { id } }: PageProps) => {
         toast({
           title: res.message,
         });
-        router.push("/chat/manage");
+        router.push("/dashboard/chat/manage");
       }
     } catch (error) {
       window.localStorage.removeItem("token");
-      router.push("/login");
+      router.push("/dashboard/login");
     }
   };
 
@@ -217,7 +195,7 @@ const page = ({ params: { id } }: PageProps) => {
                           className="bg-background flex flex-col gap-2 rounded-lg border p-8"
                           key={index}
                         >
-                          <Brain />
+                          <Image className="hidden sm:block w-8 h-8 mr-2 rounded-full" src={logo} alt="logo" />
                           <MarkDownTest source={chat.content} />
                         </motion.div>
                       );

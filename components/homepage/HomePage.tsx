@@ -39,9 +39,10 @@ export function HomePage() {
                 <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
                     SurfSense
                 </div>
-                <div className="text-xs font-semibold text-green-500"> UPDATE 24st August 2024 : SurfSense Extension is now cross browser supported. Get any browser builds from https://github.com/MODSetter/SurfSense until its approved in all webstores.</div>
+                UPDATE 20st September 2024 :
+                <div className="text-xs font-semibold text-green-500">Surfsense is updated to v0.0.3. For now only the local setup will work but hey it supports Ollama now - https://github.com/MODSetter/SurfSense .</div>
                 <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
-                    A Knowledge Graph 🧠 Brain 🧠 for World Wide Web Surfers.
+                    A Personal AI Assistant for World Wide Web Surfers.
                 </div>
                 <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
                     <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />

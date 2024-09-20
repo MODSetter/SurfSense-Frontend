@@ -20,9 +20,9 @@ export default function FeaturesSectionDemo() {
                 "col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-800",
         },
         {
-            title: "Capture critical notifications.",
+            title: "Local LLM Support.",
             description:
-                "Capture critical notifications so you never miss meetings, bill payment, job interviews etc.",
+                "Works flawlessly with local Ollama LLMs",
             skeleton: <SkeletonTwo />,
             className: "border-b col-span-1 lg:col-span-2 dark:border-neutral-800",
         },
@@ -35,9 +35,9 @@ export default function FeaturesSectionDemo() {
                 "col-span-1 lg:col-span-3 lg:border-r  dark:border-neutral-800",
         },
         {
-            title: "Find meaningful connections using Knowledge Graph",
+            title: "Find meaningful connections using SurfSense Advance Search",
             description:
-                "Uses Knowledge Graph to find meaningful connections in your Web Sessions.",
+                "Uses Advanced RAG methods to find meaningful connections in your Web Sessions.",
             skeleton: <SkeletonFour />,
             className: "col-span-1 lg:col-span-3 border-b lg:border-none",
         },

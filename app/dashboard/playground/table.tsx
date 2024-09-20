@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, Brain, ChevronDown, User } from "lucide-react"
+import { ArrowUpDown, ChevronDown, User } from "lucide-react"
 
 import { motion } from "framer-motion"
 
@@ -26,7 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import logo from "@/public/SurfSense.png";
-import MarkDownTest from "../markdown";
+import MarkDownTest from "@/app/markdown";
 import { Input } from "@/components/ui/input"
 import {
   Table,
@@ -37,20 +37,32 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import Image from "next/image";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
+import Metas from "./metas"
 
 
 export type Docs = {
-  BrowsingSessionId: string
-  VisitedWebPageURL: string
-  VisitedWebPageTitle: string
-  VisitedWebPageReffererURL: string
-  VisitedWebPageVisitDurationInMilliseconds: number
-  VisitedWebPageContent: string
-  VisitedWebPageDateWithTimeInISOString: string
+  id: string
+  created_at: string
+  title: string
+  file_type: string
+  search_space: any
+  document_metadata: string
+  page_content: string
 }
 
 export const columns: ColumnDef<Docs>[] = [
@@ -77,78 +89,127 @@ export const columns: ColumnDef<Docs>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "BrowsingSessionId",
+    accessorKey: "id",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Session Id
+          ID
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
-      //   const amount = parseFloat(row.getValue("amount"))
-      return <div className="text-right font-medium">{row.getValue("BrowsingSessionId")}</div>
-    },
-  },
-    {
-    accessorKey: "VisitedWebPageURL",
-    header: () => <div className="text-right">URL</div>,
-    cell: ({ row }) => {
-      //   const amount = parseFloat(row.getValue("amount"))
-      return <div className="text-right font-medium">{row.getValue("VisitedWebPageURL")}</div>
+      return <div className="text-center font-medium">{row.getValue("id")}</div>
     },
   },
   {
-    accessorKey: "VisitedWebPageTitle",
-    header: () => <div className="text-right">Title</div>,
-    cell: ({ row }) => {
-      //   const amount = parseFloat(row.getValue("amount"))
-      return <div className="text-right font-medium">{row.getValue("VisitedWebPageTitle")}</div>
-    },
-  },
-  {
-    accessorKey: "VisitedWebPageDateWithTimeInISOString",
+    accessorKey: "created_at",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Time
+          Created At
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
-      //   const amount = parseFloat(row.getValue("amount"))
-      return <div className="text-right font-medium">{row.getValue("VisitedWebPageDateWithTimeInISOString")}</div>
+      return <div className="text-center font-medium">{row.getValue("created_at")}</div>
     },
   },
   {
-    accessorKey: "VisitedWebPageVisitDurationInMilliseconds",
+    accessorKey: "title",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Visit Duration (seconds)
+          Title
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
-      //   const amount = parseFloat(row.getValue("amount"))
-      return <div className="text-right font-medium">{parseInt(row.getValue("VisitedWebPageVisitDurationInMilliseconds")) / 1000}</div>
+      return <div className="text-center font-medium">{row.getValue("title")}</div>
+    },
+  },
+  {
+    accessorKey: "file_type",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          File Type
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      return <div className="text-center font-medium">{row.getValue("file_type")}</div>
+    },
+  },
+  // {
+  //   accessorKey: "search_space",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Search Space
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     )
+  //   },
+  //   cell: ({ row }) => {
+  //     return <div className="text-center font-medium">{row.getValue("search_space")}</div>
+  //   },
+  // },
+  {
+    accessorKey: "document_metadata",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Metadata
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      return <div className="text-center font-medium">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="outline">Show MetaData</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent className="min-w-fit">
+            <AlertDialogHeader>
+              <AlertDialogTitle>MetaData</AlertDialogTitle>
+              <AlertDialogDescription>
+                <Metas meta={row.getValue("document_metadata")} />
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>OK</AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     },
   },
 ]
 
-export function DataTableDemo({ data }: { data: Docs[] }) {
+export function DataTable({ data }: { data: Docs[] }) {
   const router = useRouter();
   const { toast } = useToast()
   const [route, setRoute] = useState(0);
@@ -186,11 +247,51 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
 
   const startChat = () => {
     const docsToChatWith = Object.values(table.getSelectedRowModel().rowsById).map(item => item.original)
+    let docsContent: string[] = [];
+    docsToChatWith.filter((doc, idx) => {
+      docsContent.push("DOCUMENT " + idx + "\n\n" + doc.page_content + "\n\n")
+    })
+
+    // console.log(docsContent)
     setCurrentChat([{
       type: "system",
-      content: docsToChatWith
+      content: docsContent
     }])
     setRoute(1)
+  }
+
+
+  const deleteSelectedDocuments = async () => {
+    const selectedDocuments = Object.values(table.getSelectedRowModel().rowsById).map(item => item.original)
+    const ids_to_del = selectedDocuments.map((doc) => {
+      return (parseInt(doc.id) - 1).toString()
+    })
+
+    // console.log(ids_to_del)
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ids_to_delete: ids_to_del,
+        openaikey: localStorage.getItem('openaikey'),
+        token: localStorage.getItem('token'),
+      }),
+    };
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL!}/delete/docs`,
+      requestOptions
+    );
+    if (!response.ok) {
+      throw new Error("Token verification failed");
+    } else {
+      const res = await response.json();
+      toast({
+        title: res.message,
+      });
+      // router.push("/dashboard/playground");
+    }
   }
 
 
@@ -217,11 +318,8 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
       body: JSON.stringify({
         query: query,
         chat: currentChat,
-        neourl: localStorage.getItem('neourl'),
-        neouser: localStorage.getItem('neouser'),
-        neopass: localStorage.getItem('neopass'),
         openaikey: localStorage.getItem('openaikey'),
-        apisecretkey: process.env.NEXT_PUBLIC_API_SECRET_KEY
+        token: localStorage.getItem('token'),
       }),
     };
 
@@ -229,7 +327,7 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
       .then(res => res.json())
       .then(data => {
         // console.log(data)
-        if(currentChat.length === 2){
+        if (currentChat.length === 2) {
           setChattitle(query)
         }
 
@@ -247,37 +345,37 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
 
   const saveChat = async () => {
     const token = window.localStorage.getItem('token');
-      // console.log(token)
-      try {
-        const requestOptions = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            token: token,
-            type: "multidoc",
-            title: chattitle,
-            chats_list: JSON.stringify(currentChat)
-          }),
-        };
-    
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL!}/user/chat/save`,
-          requestOptions
-        );
-        if (!response.ok) {
-          throw new Error('Token verification failed');
-        } else {
-          const res = await response.json();
-          toast({
-            title: res.message,
-          })
-          router.push('/chat/manage');
-        }
-        
-      } catch (error) {
-        window.localStorage.removeItem('token');
-        router.push('/login');
+    // console.log(token)
+    try {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: token,
+          type: "multidoc",
+          title: chattitle,
+          chats_list: JSON.stringify(currentChat)
+        }),
+      };
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL!}/user/chat/save`,
+        requestOptions
+      );
+      if (!response.ok) {
+        throw new Error('Token verification failed');
+      } else {
+        const res = await response.json();
+        toast({
+          title: res.message,
+        })
+        router.push('/dashboard/chat/manage');
       }
+
+    } catch (error) {
+      window.localStorage.removeItem('token');
+      router.push('/login');
+    }
   }
 
   useEffect(() => {
@@ -290,14 +388,11 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
         if (!response.ok) {
           throw new Error('Token verification failed');
         } else {
-          const NEO4JURL = localStorage.getItem('neourl');
-          const NEO4JUSERNAME = localStorage.getItem('neouser');
-          const NEO4JPASSWORD = localStorage.getItem('neopass');
           const OPENAIKEY = localStorage.getItem('openaikey');
 
-          const check = (NEO4JURL && NEO4JUSERNAME && NEO4JPASSWORD && OPENAIKEY)
+          const check = (OPENAIKEY)
           if (!check) {
-            router.push('/settings');
+            router.push('/dashboard/settings');
           }
         }
       } catch (error) {
@@ -314,26 +409,50 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
       <div className="w-full mt-20 p-8">
         <div className="flex items-center py-4 gap-2">
           <Input
-            placeholder="Filter Session"
-            value={(table.getColumn("BrowsingSessionId")?.getFilterValue() as string) ?? ""}
+            placeholder="Filter Title"
+            value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("BrowsingSessionId")?.setFilterValue(event.target.value)
+              table.getColumn("title")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
           />
           <Input
-            placeholder="Filter URL..."
-            value={(table.getColumn("VisitedWebPageURL")?.getFilterValue() as string) ?? ""}
+            placeholder="Filter File Type"
+            value={(table.getColumn("file_type")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("VisitedWebPageURL")?.setFilterValue(event.target.value)
+              table.getColumn("file_type")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
           />
+          {/* <Input
+            placeholder="Filter Search Space"
+            value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("title")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          /> */}
           <div
             onClick={() => startChat()}
             className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
             Start Chat
           </div>
+
+          <AlertDialog>
+            <AlertDialogTrigger><Button variant="destructive">Delete</Button></AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => deleteSelectedDocuments()}>Continue</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
@@ -473,7 +592,7 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
                         className="bg-background flex flex-col gap-2 rounded-lg border p-8"
                         key={index}
                       >
-                        <Brain />
+                        <Image className="hidden sm:block w-8 h-8 mr-2 rounded-full" src={logo} alt="logo" />
                         <MarkDownTest source={chat.content} />
                       </motion.div>
                     );
@@ -562,9 +681,9 @@ export function DataTableDemo({ data }: { data: Docs[] }) {
                     </div>
                   </form>
                   <div className="flex justify-center">
-                    {chattitle ? (  <button 
-                    onClick={() => saveChat()}
-                    className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+                    {chattitle ? (<button
+                      onClick={() => saveChat()}
+                      className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
                       <span className="absolute inset-0 overflow-hidden rounded-full">
                         <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                       </span>

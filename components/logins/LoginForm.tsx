@@ -48,12 +48,7 @@ export const LoginForm = () => {
         const data = await response.json();
         window.localStorage.setItem('token', data.access_token);
         
-
-        // router.push({ pathname: "/chat", query: { u: "true" } });
-        window.location.href = "/chat"
-        // router.push('/chat');
-        // router.refresh()
-        // navigate('/protected');
+        window.location.href = "/dashboard/playground"
       } else {
         const errorData = await response.json();
         setError(errorData.detail || 'Authentication failed!');

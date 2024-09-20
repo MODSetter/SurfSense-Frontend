@@ -73,13 +73,18 @@ function Navbar({ className }: { className?: string }) {
                                 Log In
                             </button>
                         </a>) : (<>
+                            <Link href={"/dashboard/playground"}>
+                            <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
+                                Dashboard
+                            </button>
+                        </Link>
                             <button onClick={() => logOut()} className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
                                 Log Out
                             </button>
                         </>)
                     }
 
-                    {
+                    {/* {
                         !loggedin ? (<Link href={"/signup"}>
                             <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
                                 Sign Up
@@ -111,7 +116,7 @@ function Navbar({ className }: { className?: string }) {
                                 </button>
                             </Link>
                         </>) : (<></>)
-                    }
+                    } */}
 
 
 
