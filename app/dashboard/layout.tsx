@@ -2,6 +2,7 @@
 import {
     Book,
     Bot,
+    CloudUpload,
     Settings2,
     SquareTerminal,
 } from "lucide-react"
@@ -35,6 +36,8 @@ export default function Layout({
             router.push('/dashboard/chat/manage');
         }else if(id == 4){
             router.push('/dashboard/settings');
+        }else if(id == 5){
+            router.push('/dashboard/upload');
         }
     }
     return (
@@ -68,7 +71,7 @@ export default function Layout({
                                     variant="ghost"
                                     size="icon"
                                     className={buttonclicked === 2 ? "rounded-lg bg-muted" : "rounded-lg"}
-                                    aria-label="Models"
+                                    aria-label="Chat"
                                     onClick={() => onButtonClick(2)}
                                 >
                                     <Bot className="size-5" />
@@ -80,23 +83,25 @@ export default function Layout({
                         </Tooltip>
                     </TooltipProvider>
 
-                    {/* <TooltipProvider>
+                    <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
                                     variant="ghost"
                                     size="icon"
                                     className="rounded-lg"
-                                    aria-label="API"
+                                    aria-label="files"
+                                    onClick={() => onButtonClick(5)}
                                 >
-                                    <Code2 className="size-5" />
+                                    <CloudUpload  className="size-5" />
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent side="right" sideOffset={5}>
-                                API
+                                Upload Files
                             </TooltipContent>
                         </Tooltip>
-                    </TooltipProvider> */}
+                    </TooltipProvider>
+
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -104,7 +109,7 @@ export default function Layout({
                                     variant="ghost"
                                     size="icon"
                                     className={buttonclicked === 3 ? "rounded-lg bg-muted" : "rounded-lg"}
-                                    aria-label="Documentation"
+                                    aria-label="SavedChats"
                                     onClick={() => onButtonClick(3)}
                                 >
                                     <Book className="size-5" />

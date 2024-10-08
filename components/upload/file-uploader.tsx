@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast" // Import the useToast hook
 import { X, Upload, FileIcon, Tag } from "lucide-react"
+import { useRouter } from "next/navigation";
 
 export default function FileUploader() {
   const [files, setFiles] = useState<File[]>([])
   const [categoryTag, setCategoryTag] = useState("")
-
+  const router = useRouter();
   const { toast } = useToast() // Destructure toast from useToast hook
 
   const acceptedFileTypes = {
@@ -85,6 +86,11 @@ export default function FileUploader() {
     formData.append('api_key', window.localStorage.getItem("openaikey") || "nothing")
   
     try {
+      toast({
+        title: "File Upload",
+        description: "Files Uploading Initiated",
+      })
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/uploadfiles/`, {
         method: "POST",
         headers: {
@@ -102,6 +108,8 @@ export default function FileUploader() {
         title: "Upload Successful",
         description: responseData.message,
       })
+
+      router.push('/dashboard/playground');
     } catch (error: any) {
       toast({
         title: "Upload Error",

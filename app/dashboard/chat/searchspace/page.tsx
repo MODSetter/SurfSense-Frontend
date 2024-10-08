@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+
 import Image from "next/image";
 import logo from "@/public/SurfSense.png";
 import { FileCheck } from "lucide-react";
@@ -27,6 +28,7 @@ import { useRouter } from "next/navigation";
 
 import { motion } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
+import JsonThemeEditor from "@/app/json-editor";
 
 // type Document = {
 //   BrowsingSessionId: string;
@@ -144,11 +146,23 @@ function ProtectedPage() {
 
   const getDocDescription = (doc: any) => {
     let cur = currentChat;
-    cur.push({
-      type: "description",
-      doctitle: doc.VisitedWebPageTitle,
-      message: doc.VisitedWebPageContent,
-    });
+
+    const meta = JSON.parse(doc.DocMetadata)
+
+    if(meta.filetype === 'WEBPAGE'){
+      cur.push({
+        type: "description",
+        doctitle: meta.VisitedWebPageTitle,
+        message: doc.Content,
+      });
+    }else{
+      cur.push({
+        type: "description",
+        doctitle: meta.filename,
+        message: doc.Content,
+      });
+    }
+
 
     setLoading(false);
     setCurrentChat([...cur]);
@@ -237,66 +251,17 @@ function ProtectedPage() {
                         {
                           //@ts-ignore
                           chat.message.relateddocs.map((doc) => {
-
+                            const meta = JSON.parse(doc.DocMetadata)
 
                             return (
                               <Collapsible className="border rounded-lg p-3">
                                 <CollapsibleTrigger className="flex justify-between gap-2 mb-2">
                                   <FileCheck />
-                                  {doc.VisitedWebPageTitle}
+                                  {meta.filename || meta.VisitedWebPageTitle}
                                 </CollapsibleTrigger>
-                                <CollapsibleContent className="flex flex-col gap-4">
-                                  <Table>
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell className="font-medium">
-                                          Browsing Session Id
-                                        </TableCell>
-                                        <TableCell>
-                                          {doc.BrowsingSessionId}
-                                        </TableCell>
-                                      </TableRow>
-                                      <TableRow>
-                                        <TableCell className="font-medium">
-                                          URL
-                                        </TableCell>
-                                        <TableCell>
-                                          {doc.VisitedWebPageURL}
-                                        </TableCell>
-                                      </TableRow>
-                                      <TableRow>
-                                        <TableCell className="font-medium">
-                                          Reffering URL
-                                        </TableCell>
-                                        <TableCell>
-                                          {doc.VisitedWebPageReffererURL}
-                                        </TableCell>
-                                      </TableRow>
-
-                                      <TableRow>
-                                        <TableCell className="font-medium">
-                                          Date & Time Visited
-                                        </TableCell>
-                                        <TableCell>
-                                          {
-                                            doc.VisitedWebPageDateWithTimeInISOString
-                                          }
-                                        </TableCell>
-                                      </TableRow>
-
-                                      <TableRow>
-                                        <TableCell className="font-medium">
-                                          Visit Duration (In Milliseconds)
-                                        </TableCell>
-                                        <TableCell>
-                                          {
-                                            doc.VisitedWebPageVisitDurationInMilliseconds
-                                          }
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-
+                                <CollapsibleContent className="flex flex-col place-content-center gap-4">
+                                  {/* <MarkDownTest source={doc.DocMetadata} /> */}
+                                  <JsonThemeEditor jsonobject={meta} />
                                   <Button
                                     variant="outline"
                                     className="bg-red-500/10"

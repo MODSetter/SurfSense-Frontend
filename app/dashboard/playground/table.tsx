@@ -52,7 +52,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
-import Metas from "./metas"
+import JsonThemeEditor from "@/app/json-editor"
 
 
 export type Docs = {
@@ -196,7 +196,7 @@ export const columns: ColumnDef<Docs>[] = [
             <AlertDialogHeader>
               <AlertDialogTitle>MetaData</AlertDialogTitle>
               <AlertDialogDescription>
-                <Metas meta={row.getValue("document_metadata")} />
+                <JsonThemeEditor jsonobject={JSON.parse(row.getValue("document_metadata"))} />
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
