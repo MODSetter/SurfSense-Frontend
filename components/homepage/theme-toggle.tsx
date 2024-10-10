@@ -1,40 +1,70 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
+import * as React from "react";
+import { useTheme } from "next-themes";
+import { MoonIcon } from "lucide-react";
+import { IconSunLow } from "@tabler/icons-react";
+import { motion } from "framer-motion";
 
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+export function ModeToggle() {
+  const { theme, setTheme } = useTheme();
 
-export function ThemeToggle() {
-  const { setTheme } = useTheme()
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button className="bg-transparent" variant="ghost" size="sm">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
+    isClient && (
+      <button
+        onClick={() => {
+          theme === "dark" ? setTheme("light") : setTheme("dark");
+        }}
+        className="w-10 h-10 flex hover:bg-gray-50 dark:hover:bg-white/[0.1] rounded-lg items-center justify-center outline-none focus:ring-0 focus:outline-none active:ring-0 active:outline-none overflow-hidden"
+      >
+        {theme === "light" && (
+          <motion.div
+            key={theme}
+            initial={{
+              x: 40,
+              opacity: 0,
+            }}
+            animate={{
+              x: 0,
+              opacity: 1,
+            }}
+            transition={{
+              duration: 0.3,
+              ease: "easeOut",
+            }}
+          >
+            <IconSunLow className="h-4 w-4 flex-shrink-0  dark:text-neutral-500 text-neutral-700" />
+          </motion.div>
+        )}
+
+        {theme === "dark" && (
+          <motion.div
+            key={theme}
+            initial={{
+              x: 40,
+              opacity: 0,
+            }}
+            animate={{
+              x: 0,
+              opacity: 1,
+            }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+            }}
+          >
+            <MoonIcon className="h-4 w-4   flex-shrink-0  dark:text-neutral-500 text-neutral-700" />
+          </motion.div>
+        )}
+
+        <span className="sr-only">Toggle theme</span>
+      </button>
+    )
+  );
 }

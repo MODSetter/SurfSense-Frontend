@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { HoveredLink, Menu, MenuItem, ProductItem } from "../ui/navbar-menu";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "./theme-toggle";
+import { ModeToggle } from "./theme-toggle";
 import Image from "next/image";
 import logo from "../../public/SurfSense.png"
 import Link from "next/link";
@@ -134,7 +134,7 @@ function Navbar({ className }: { className?: string }) {
 
 
 
-                    <ThemeToggle />
+                    <ModeToggle />
                 </div>
 
             </Menu>
