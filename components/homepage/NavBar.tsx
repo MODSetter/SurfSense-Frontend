@@ -74,7 +74,7 @@ function Navbar({ className }: { className?: string }) {
         >
             <Menu setActive={setActive}>
                 <Link href={"/"} className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white">
-                    <Image className="hidden sm:block w-8 h-8 mr-2" src={logo} alt="logo" />
+                    <Image className="hidden sm:block w-8 h-8 mr-2 rounded-full" src={logo} alt="logo" />
                     <span className="hidden md:block text-purple-400">SurfSense</span>
                 </Link>
 
