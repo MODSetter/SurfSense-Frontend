@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Bell } from "lucide-react";
+import { useMotionValueEvent, useScroll } from "framer-motion";
 
 export function MainNavbar() {
     return (
@@ -24,6 +25,17 @@ function Navbar({ className }: { className?: string }) {
 
 
     const [loggedin, setLoggedin] = useState<boolean>(false);
+    const { scrollY } = useScroll();
+
+    const [showBackground, setShowBackground] = useState(false);
+  
+    useMotionValueEvent(scrollY, "change", (value) => {
+      if (value > 100) {
+        setShowBackground(true);
+      } else {
+        setShowBackground(false);
+      }
+    });
     const router = useRouter();
     useEffect(() => {
         const verifyToken = async () => {
@@ -57,7 +69,8 @@ function Navbar({ className }: { className?: string }) {
 
     return (
         <div
-            className={cn("fixed top-10 inset-x-0 max-w-7xl mx-auto z-50", className)}
+            className={cn("fixed top-10 inset-x-0 max-w-7xl mx-auto z-50", showBackground &&
+                " rounded-full dark:bg-black/20 bg-white/20 backdrop-blur-lg", className)}
         >
             <Menu setActive={setActive}>
                 <Link href={"/"} className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white">

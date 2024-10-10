@@ -119,7 +119,7 @@ export default function FileUploader() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-background rounded-lg shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+    <div className="max-w-md mt-56 mx-auto p-6 bg-background rounded-lg shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(255,255,255,0.1)]">
       <div
         {...getRootProps()}
         className={`p-8 border-2 border-dashed rounded-lg text-center cursor-pointer transition-colors ${

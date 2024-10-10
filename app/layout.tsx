@@ -73,7 +73,7 @@ export default function RootLayout({
 
 					<div className="flex flex-col justify-between h-screen">
 						<MainNavbar />
-						<div className="grow mt-24">
+						<div className="grow">
 							{children}
 						</div>
 						<Footer />
