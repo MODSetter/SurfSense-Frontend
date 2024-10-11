@@ -3,7 +3,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div><FileUploader></FileUploader></div>
+    <div className='grow'><FileUploader></FileUploader></div>
   )
 }
 

@@ -560,7 +560,7 @@ export function DataTable({ data }: { data: Docs[] }) {
   } else if (route === 1) {
     return (
       <>
-        <div className="relative flex h-[calc(100vh_-_theme(spacing.16))] overflow-hidden mt-16">
+        <div className="grow relative flex h-[calc(100vh_-_theme(spacing.16))] overflow-hidden mt-16">
           <div className="group w-full overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
             <div className="pb-[200px] pt-4 md:pt-10">
               <div className="mx-auto max-w-4xl px-4 flex flex-col gap-3">
