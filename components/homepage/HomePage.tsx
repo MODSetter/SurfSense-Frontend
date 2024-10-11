@@ -90,11 +90,12 @@ export function HomePage() {
                 >
                     <div className="rounded-[24px] border border-neutral-200 bg-white p-2 dark:border-neutral-700 dark:bg-black">
                         <Image
-                            src="/dashboard.webp"
+                            src="/gif.gif"
                             alt="header"
                             width={1920}
                             height={1080}
                             className="rounded-[20px]"
+                            unoptimized 
                         />
                     </div>
                 </div>
