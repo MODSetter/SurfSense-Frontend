@@ -27,7 +27,7 @@ export default function FeaturesSectionDemo() {
             className: "border-b col-span-1 lg:col-span-2 dark:border-neutral-800",
         },
         {
-            title: "Chat with your Saved Web Sessions.",
+            title: "Chat with your Saved Web Content and Files.",
             description:
                 "Converse with your Brain in Natural Language",
             skeleton: <SkeletonThree />,

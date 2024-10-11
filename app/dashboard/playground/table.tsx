@@ -227,6 +227,7 @@ export function DataTable({ data }: { data: Docs[] }) {
 
   const table = useReactTable({
     data,
+
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -236,6 +237,11 @@ export function DataTable({ data }: { data: Docs[] }) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    initialState: {
+      pagination: {
+          pageSize: 10,
+      },
+  },
     state: {
       sorting,
       columnFilters,
@@ -406,7 +412,7 @@ export function DataTable({ data }: { data: Docs[] }) {
 
   if (route === 0) {
     return (
-      <div className="w-full mt-20 p-8">
+      <div className="w-full p-8">
         <div className="flex items-center py-4 gap-2">
           <Input
             placeholder="Filter Title"

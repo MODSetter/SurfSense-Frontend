@@ -149,13 +149,13 @@ function ProtectedPage() {
 
     const meta = JSON.parse(doc.DocMetadata)
 
-    if(meta.filetype === 'WEBPAGE'){
+    if (meta.filetype === 'WEBPAGE') {
       cur.push({
         type: "description",
         doctitle: meta.VisitedWebPageTitle,
         message: doc.Content,
       });
-    }else{
+    } else {
       cur.push({
         type: "description",
         doctitle: meta.filename,
@@ -245,7 +245,7 @@ function ProtectedPage() {
                         </p>
                         <MarkDownTest source={chat.message.response} />
                         <p className="font-sm font-semibold">
-                          Related Browsing Sessions
+                          Related Sources
                         </p>
 
                         {
