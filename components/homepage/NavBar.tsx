@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { HoveredLink, Menu, MenuItem, ProductItem } from "../ui/navbar-menu";
+import { Menu } from "../ui/navbar-menu";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "./theme-toggle";
 import Image from "next/image";
@@ -8,13 +8,12 @@ import logo from "../../public/SurfSense.png"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { Bell } from "lucide-react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 
 export function MainNavbar() {
     return (
         <div className="relative w-full flex items-center justify-around">
-            <Navbar className="top-2 px-2" />
+            <Navbar className="px-2" />
         </div>
     );
 }
@@ -70,7 +69,7 @@ function Navbar({ className }: { className?: string }) {
     return (
         <div
             className={cn("fixed top-10 inset-x-0 max-w-7xl mx-auto z-50", showBackground &&
-                " rounded-full dark:bg-black/20 bg-white/20 backdrop-blur-lg", className)}
+                "top-2 rounded-full dark:bg-black/20 bg-white/20 backdrop-blur-lg", className)}
         >
             <Menu setActive={setActive}>
                 <Link href={"/"} className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white">

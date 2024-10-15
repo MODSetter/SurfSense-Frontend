@@ -239,9 +239,9 @@ export function DataTable({ data }: { data: Docs[] }) {
     onRowSelectionChange: setRowSelection,
     initialState: {
       pagination: {
-          pageSize: 10,
+        pageSize: 10,
       },
-  },
+    },
     state: {
       sorting,
       columnFilters,

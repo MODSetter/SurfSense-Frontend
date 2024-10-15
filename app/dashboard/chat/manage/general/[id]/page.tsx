@@ -265,7 +265,7 @@ const page = ({ params: { id } }: PageProps) => {
                         </p>
                         <MarkDownTest source={chat.message.response} />
                         <p className="font-sm font-semibold">
-                          Related Browsing Sessions
+                          Related Sources
                         </p>
 
                         {
