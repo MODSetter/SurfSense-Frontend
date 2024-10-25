@@ -572,10 +572,10 @@ export function DataTable({ data }: { data: Docs[] }) {
               <div className="mx-auto max-w-4xl px-4 flex flex-col gap-3">
                 <div className="bg-background flex flex-col gap-2 rounded-lg border p-8">
                   <h1 className="text-sm font-semibold">
-                    SurfSense Multi Webpage Chat
+                    SurfSense Multi Documents Chat
                   </h1>
                   <p className="text-muted-foreground leading-normal">
-                    🧠 WebPages Loaded: {currentChat[0].content.length}  🧠
+                    🧠 Documents Loaded: {currentChat[0].content.length}  🧠
                   </p>
                 </div>
                 {currentChat.map((chat, index) => {
