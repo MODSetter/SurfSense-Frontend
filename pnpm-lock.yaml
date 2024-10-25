@@ -98,6 +98,9 @@ importers:
       react-wrap-balancer:
         specifier: ^1.1.1
         version: 1.1.1(react@18.3.1)
+      rehype-raw:
+        specifier: ^7.0.0
+        version: 7.0.0
       simplex-noise:
         specifier: ^4.0.3
         version: 4.0.3
