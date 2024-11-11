@@ -10,16 +10,16 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "SurfSense - Personal AI Assistant for World Wide Web Surfers.",
+	title: "SurfSense - A Personal NotebookLM and Perplexity-like AI Assistant for Everyone.",
 	description:
-		"Save anything you see or browse on the Internet and save it to ask AI about it.",
+		"Have your own private NotebookLM and Perplexity with better integrations.",
 	openGraph: {
 		images: [
 			{
 				url: "https://surfsense.net/og-image.png",
 				width: 1200,
 				height: 630,
-				alt: "SurfSense - A Knowledge Graph Brain for World Wide Web Surfers.",
+				alt: "SurfSense - A Personal NotebookLM and Perplexity-like AI Assistant for Everyone.",
 			},
 		],
 	},
@@ -27,15 +27,15 @@ export const metadata: Metadata = {
 		card: "summary_large_image",
 		site: "https://surfsense.net",
 		creator: "https://surfsense.net",
-		title: "SurfSense - Personal AI Assistant for World Wide Web Surfers.",
+		title: "SurfSense - A Personal NotebookLM and Perplexity-like AI Assistant for Everyone.",
 		description:
-			"Save anything you see or browse on the Internet and save it to ask AI about it.",
+			"Have your own private NotebookLM and Perplexity with better integrations.",
 		images: [
 			{
 				url: "https://surfsense.net/og-image.png",
 				width: 1200,
 				height: 630,
-				alt: "SurfSense - Personal AI Assistant for World Wide Web Surfers.",
+				alt: "SurfSense - A Personal NotebookLM and Perplexity-like AI Assistant for Everyone.",
 			},
 		],
 	},

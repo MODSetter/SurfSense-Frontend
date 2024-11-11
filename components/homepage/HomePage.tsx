@@ -1,15 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { AuroraBackground } from "../ui/aurora-background";
 import Balancer from "react-wrap-balancer";
 import icon from "../../public/SurfSense.png"
 import Image from "next/image";
 import Link from "next/link";
 import { Github } from "lucide-react";
-import FeaturesSectionDemo from "./StartSection";
-import { ThreeDCardDemo } from "./FeatureSection";
-import { LampDemo } from "./LampSection";
+
 import { Badge } from "../badge";
 
 export function HomePage() {
