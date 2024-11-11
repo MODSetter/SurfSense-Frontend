@@ -74,12 +74,20 @@ const config = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
         },
         aurora: {
           from: {
@@ -97,50 +105,81 @@ const config = {
             backgroundPosition: "-200% 0",
           },
         },
+        move: {
+          "0%": {
+            transform: "translateX(-200px)",
+          },
+          "100%": {
+            transform: "translateX(200px)",
+          },
+        },
+        "background-position-spin": {
+          "0%": {
+            backgroundPosition: "top center",
+          },
+          "100%": {
+            backgroundPosition: "bottom center",
+          },
+        },
+        shine: {
+          "0%": {
+            "background-position": "0% 0%",
+          },
+          "50%": {
+            "background-position": "100% 100%",
+          },
+          to: {
+            "background-position": "0% 0%",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         aurora: "aurora 60s linear infinite",
         shimmer: "shimmer 2s linear infinite",
+        move: "move 5s linear infinite",
+        "background-position-spin":
+          "background-position-spin 3000ms infinite alternate",
+        shine: "shine var(--duration) infinite linear",
       },
       fontFamily: {
-        'body': [
-      'Inter', 
-      'ui-sans-serif', 
-      'system-ui', 
-      '-apple-system', 
-      'system-ui', 
-      'Segoe UI', 
-      'Roboto', 
-      'Helvetica Neue', 
-      'Arial', 
-      'Noto Sans', 
-      'sans-serif', 
-      'Apple Color Emoji', 
-      'Segoe UI Emoji', 
-      'Segoe UI Symbol', 
-      'Noto Color Emoji'
-    ],
-        'sans': [
-      'Inter', 
-      'ui-sans-serif', 
-      'system-ui', 
-      '-apple-system', 
-      'system-ui', 
-      'Segoe UI', 
-      'Roboto', 
-      'Helvetica Neue', 
-      'Arial', 
-      'Noto Sans', 
-      'sans-serif', 
-      'Apple Color Emoji', 
-      'Segoe UI Emoji', 
-      'Segoe UI Symbol', 
-      'Noto Color Emoji'
-    ]
-    }
-  }
+        body: [
+          "Inter",
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "system-ui",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "Noto Sans",
+          "sans-serif",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "Noto Color Emoji",
+        ],
+        sans: [
+          "Inter",
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "system-ui",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "Noto Sans",
+          "sans-serif",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "Noto Color Emoji",
+        ],
+      },
+    },
   },
   plugins: [require("tailwindcss-animate"), addVariablesForColors],
 } satisfies Config;

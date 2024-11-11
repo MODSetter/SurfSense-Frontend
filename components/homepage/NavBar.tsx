@@ -27,13 +27,13 @@ function Navbar({ className }: { className?: string }) {
     const { scrollY } = useScroll();
 
     const [showBackground, setShowBackground] = useState(false);
-  
+
     useMotionValueEvent(scrollY, "change", (value) => {
-      if (value > 100) {
-        setShowBackground(true);
-      } else {
-        setShowBackground(false);
-      }
+        if (value > 100) {
+            setShowBackground(true);
+        } else {
+            setShowBackground(false);
+        }
     });
     const router = useRouter();
     useEffect(() => {
@@ -85,51 +85,11 @@ function Navbar({ className }: { className?: string }) {
                                 Log In
                             </button>
                         </a>) : (<>
-                            <Link href={"/dashboard/playground"}>
-                            <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
-                                Dashboard
-                            </button>
-                        </Link>
                             <button onClick={() => logOut()} className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
                                 Log Out
                             </button>
                         </>)
                     }
-
-                    {/* {
-                        !loggedin ? (<Link href={"/signup"}>
-                            <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
-                                Sign Up
-                            </button>
-                        </Link>) : (<Link href={"/chat/manage"}>
-                            <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
-                                Saved Chats
-                            </button>
-                        </Link>)
-                    }
-
-                    {
-                        loggedin ? (<>
-                            <Link href={"/settings"}>
-                                <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
-                                    Settings
-                                </button>
-                            </Link>
-                            <Link href={"/notifications"}>
-                                <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
-                                    🔔
-                                </button>
-                            </Link>
-
-
-                            <Link href={"/chat"} className="grow">
-                                <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
-                                    🧠
-                                </button>
-                            </Link>
-                        </>) : (<></>)
-                    } */}
-
 
 
 

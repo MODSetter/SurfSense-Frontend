@@ -68,7 +68,7 @@ export function HomePage() {
                 </p>
                 <div className="mb-10 mt-8 flex w-full flex-col items-center justify-center gap-4 px-8 sm:flex-row md:mb-20">
                     <Link
-                        href="/signup"
+                        href="/searchspace"
                         className="group relative z-20 flex h-10 w-full cursor-pointer items-center justify-center space-x-2 rounded-lg bg-black p-px px-4 py-2 text-center text-sm font-semibold leading-6 text-white no-underline transition duration-200 dark:bg-white dark:text-black sm:w-52"
                     >
                         Get Started
@@ -100,9 +100,9 @@ export function HomePage() {
                     </div>
                 </div>
             </AuroraBackground>
-            <FeaturesSectionDemo />
+            {/* <FeaturesSectionDemo /> */}
             {/* <ThreeDCardDemo /> */}
-            <LampDemo />
+            {/* <LampDemo /> */}
         </>
 
     );

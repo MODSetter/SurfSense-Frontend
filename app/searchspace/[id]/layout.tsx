@@ -1,10 +1,10 @@
 "use client";
-
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Link, { LinkProps } from "next/link";
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import ShineBorder from "@/components/ui/shine-border";
 import {
   IconArrowLeft,
   IconBrandTabler,
@@ -21,53 +21,93 @@ import { Logo } from "@/components/Logo";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { ModeToggle } from "@/components/homepage/theme-toggle";
+import { LogOut, Mic } from "lucide-react";
 
+interface ParamsProps {
+  id: number
+}
 
 export default function SidebarLayout({
+  params: { id },
   className,
   children,
 }: {
   className?: string;
   children: React.ReactNode;
+  params: ParamsProps
 }) {
+
+  const [searchspace, setSearchSpace] = useState<string>("")
+
+  useEffect(() => {
+    const getSearchSpace = async () => {
+      try {
+        const token = window.localStorage.getItem("token");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL!}/user/${token}/searchspace/${id}/`, { method: 'GET' })
+
+        if (!response.ok) {
+          throw new Error("Token verification failed");
+        } else {
+          const res = await response.json();
+          setSearchSpace(res.name)
+        }
+      } catch (error) {
+        window.localStorage.removeItem("token");
+        router.push("/login");
+      }
+    }
+    getSearchSpace()
+  }, []);
+
   const primaryLinks = [
     {
-      label: "Settings",
-      href: "/dashboard/settings",
-      icon: (
-        <IconSettings className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    }
-  ];
-  const secondaryLinks = [
-    {
-      label: "Dashboard",
-      href: "/dashboard/playground",
+      label: "Chat",
+      href: `/searchspace/${id}`,
       icon: (
         <IconBrandTabler className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+
       ),
     },
     {
-      label: "Search Space Chat",
-      href: "/dashboard/chat/searchspace",
+      label: "Documents",
+      href: `/searchspace/${id}/documents`,
       icon: (
         <IconFileSearch className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Upload Files",
-      href: "/dashboard/upload",
+      href: `/searchspace/${id}/upload`,
       icon: (
         <IconCloudUpload className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
-      label: "Saved Chats",
-      href: "/dashboard/chat/manage",
+      label: "Podcasts",
+      href: `/searchspace/${id}/podcasts`,
+      icon: (
+        <Mic className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+      )
+    },
+    {
+      label: "Chat History",
+      href: `/searchspace/${id}/chat/history`,
       icon: (
         <IconRotate className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
       )
     },
+
+  ];
+  //@ts-ignore
+  const secondaryLinks: any[] = [
+    {
+      label: "All SearchSpaces",
+      href: "/searchspace",
+      icon: (
+        <IconArrowLeft className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+
   ];
   const [open, setOpen] = useState(true);
   const { toast } = useToast()
@@ -83,7 +123,7 @@ export default function SidebarLayout({
   return (
     <div
       className={cn(
-        "mx-auto flex w-full max-w-full flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 dark:border-neutral-700 dark:bg-neutral-800 md:flex-row",
+        "mx-auto flex w-full max-w-full flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 dark:border-neutral-700 bg-gray-100 dark:bg-black md:flex-row",
         "h-screen",
         className,
       )}
@@ -96,15 +136,26 @@ export default function SidebarLayout({
               {primaryLinks.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}
+
+            </div>
+            <div className="mt-4">
+              <div className="h-px w-full bg-neutral-200 dark:bg-neutral-700"></div>
+              <div className="h-px w-full bg-white dark:bg-neutral-900"></div>
+            </div>
+            <div className="mt-4 flex flex-col">
+              {secondaryLinks.map((link, idx) => (
+                <SidebarLink key={idx} link={link} />
+              ))}
+
               <div
-              onClick={() => logOut()}
+                onClick={() => logOut()}
                 className={cn(
-                  "group/sidebar flex items-center justify-start gap-2 rounded-sm px-2 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700",
+                  "group/sidebar flex items-center justify-start gap-2 rounded-sm px-2 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 ",
                   className,
                 )}
 
               >
-                <IconArrowLeft className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+                <LogOut className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
 
                 <motion.span
                   animate={{
@@ -117,17 +168,19 @@ export default function SidebarLayout({
                 </motion.span>
               </div>
             </div>
-            <div className="mt-4">
-              <div className="h-px w-full bg-neutral-200 dark:bg-neutral-700"></div>
-              <div className="h-px w-full bg-white dark:bg-neutral-900"></div>
-            </div>
-            <div className="mt-4 flex flex-col">
-              {secondaryLinks.map((link, idx) => (
-                <SidebarLink key={idx} link={link} />
-              ))}
-            </div>
           </div>
-          <div>
+          <div className="flex flex-col gap-2 items-center">
+            {searchspace && open && (
+              <div className="w-full bg-background border-alpha-400 flex flex-col gap-2 rounded-lg border p-3 drop-shadow-sm transition-[transform,border] hover:-translate-y-0.5 hover:border-gray-300 hover:drop-shadow-md">
+                <span className="flex items-center justify-between text-gray-500">
+                  <h5 className="text-[13px] font-medium">Search Space</h5>
+                </span>
+                <p className="text-sm">
+                  {searchspace}
+                </p>
+              </div>
+
+            )}
             <ModeToggle />
           </div>
         </SidebarBody>
