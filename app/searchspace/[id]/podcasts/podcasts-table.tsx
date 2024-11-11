@@ -302,7 +302,7 @@ export function PodcastDataTable({ search_space_id, data }: { search_space_id: N
           className="max-w-sm"
         />
 
-        <AlertDialog>
+        {/* <AlertDialog>
           <AlertDialogTrigger><Button variant="destructive">Delete</Button></AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -316,7 +316,7 @@ export function PodcastDataTable({ search_space_id, data }: { search_space_id: N
               <AlertDialogAction onClick={() => deleteSelectedDocuments()}>Continue</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
-        </AlertDialog>
+        </AlertDialog> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
